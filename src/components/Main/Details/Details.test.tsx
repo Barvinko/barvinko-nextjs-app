@@ -12,7 +12,7 @@ vi.mock('next/router', () => ({
 }));
 
 const server = setupServer(
-  http.get('https://swapi.dev/api/people/:id', async ({ params }) => {
+  http.get('https://swapi.py4e.com/api/people/:id', async ({ params }) => {
     if (params.id === '1') {
       return HttpResponse.json({
         name: 'Luke Skywalker',
@@ -70,7 +70,7 @@ test('renders Details component and fetches character data', async () => {
 
 test('displays error message if character data is not available', async () => {
   server.use(
-    http.get('https://swapi.dev/api/people/:id', async () =>
+    http.get('https://swapi.py4e.com/api/people/:id', async () =>
       HttpResponse.json({ detail: 'Not found' }, { status: 404 })
     )
   );

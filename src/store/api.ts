@@ -3,7 +3,7 @@ import { ResponseStarWars, Character } from '@/src/types/types';
 
 export const starWarsApi = createApi({
   reducerPath: 'starWarsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.dev/api/people/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.py4e.com/api/people/' }),
   endpoints: (builder) => ({
     getCharacters: builder.query<
       ResponseStarWars,
