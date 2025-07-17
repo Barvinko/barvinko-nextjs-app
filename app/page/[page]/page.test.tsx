@@ -5,7 +5,7 @@ import { vi, Mock } from 'vitest';
 import { useRouter } from 'next/router';
 import { NextRouter } from 'next/router';
 import { createContext } from 'react';
-import Page from './[page]';
+import Page from './page';
 
 const createMockRouter = (overrides: Partial<NextRouter>): NextRouter => ({
   route: '',

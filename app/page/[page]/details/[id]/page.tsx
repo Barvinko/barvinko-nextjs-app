@@ -1,3 +1,4 @@
+'use client';
 import { Details } from '@components/Main/Details/Details';
 
 function Id() {

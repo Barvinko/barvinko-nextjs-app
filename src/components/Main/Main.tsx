@@ -1,5 +1,6 @@
+'use client';
 import { useState, useCallback } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import ReactPaginate from 'react-paginate';
 import { Search } from './Search/Search';
 import { CardList } from './CardList/CardList';
@@ -13,11 +14,10 @@ import styles from './Main.module.scss';
 
 export const Main = () => {
   const router = useRouter();
-  const { page } = router.query;
+  const searchParams = useSearchParams();
+  const page = searchParams?.get('page') || '1';
 
-  const [currentPage, setCurrentPage] = useState<number>(
-    parseInt((page as string) || '1', 10)
-  );
+  const [currentPage, setCurrentPage] = useState<number>(parseInt(page, 10));
   const dispatch = useDispatch();
   const searchName = useSelector(
     (state: RootState) => state.localStorage.searchName

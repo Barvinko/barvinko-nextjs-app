@@ -1,4 +1,5 @@
-import { useRouter } from 'next/router';
+'use client';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { selectCard, unselectCard } from '@store/selectedCardsSlice';
@@ -10,8 +11,9 @@ interface CardProps {
 }
 
 export const Card = ({ name, url }: CardProps) => {
-  const router: ReturnType<typeof useRouter> = useRouter();
-  const { page } = router.query;
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const page = searchParams?.get('page') || '1';
   const dispatch = useDispatch();
   const selectedItems = useSelector(
     (state: RootState) => state.selectedCards.selectedCards

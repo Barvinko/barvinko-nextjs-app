@@ -1,5 +1,7 @@
+'use client';
+
 import { useState, useContext, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Modal from 'react-modal';
 import { Spinner } from '@components/UI/Spinner/Spinner';
 import { ThemeContext } from '@store/ThemeContext';
@@ -8,7 +10,9 @@ import styles from './Details.module.scss';
 
 export const Details = () => {
   const router = useRouter();
-  const { page, id } = router.query;
+  const searchParams = useSearchParams();
+  const page = searchParams?.get('page') || '1';
+  const id = searchParams?.get('id') || '1';
   const [modalFlag, setModalFlag] = useState(false);
   const { theme } = useContext(ThemeContext);
 

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import NotFoundPage from './404';
+import NotFoundPage from './not_found';
 import { vi } from 'vitest';
 
 vi.mock('@components/Header/Header', () => ({
