@@ -1,6 +1,6 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Details } from '@components/Main/Details/Details';
 import Modal from 'react-modal';
 
@@ -11,14 +11,6 @@ function Page() {
   const id = searchParams?.get('id') || '1';
   const [modalFlag, setModalFlag] = useState(false);
 
-  useEffect(() => {
-    if (id) {
-      setModalFlag(true);
-    } else {
-      setModalFlag(false);
-    }
-  }, [id]);
-
   const handleClose = () => {
     router.push(`/page/${page}`);
     setModalFlag(false);
@@ -26,7 +18,7 @@ function Page() {
 
   return (
     <>
-      {modalFlag && (
+      {id && (
         <Modal
           isOpen={modalFlag}
           onRequestClose={handleClose}
