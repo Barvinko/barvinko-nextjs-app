@@ -12,7 +12,8 @@
     "format:fix": "prettier --write .",
     "prepare": "husky",
     "test": "npm run clean:coverage && vitest run --coverage",
-    "clean:coverage": "rimraf coverage"
+    "clean:coverage": "rimraf coverage",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",
@@ -57,7 +58,7 @@
     "vitest": "^3.0.5"
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": [
+    "**/*": [
       "prettier --write",
       "eslint"
     ]
