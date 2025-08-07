@@ -1,0 +1,20 @@
+query SearchAnime($search: String, $page: Int) {
+  Page(page: $page, perPage: 12) {
+    pageInfo {
+      total
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    media(search: $search, type: ANIME, sort: POPULARITY_DESC) {
+      id
+      title {
+        romaji
+        english
+      }
+      coverImage {
+        large
+      }
+    }
+  }
+}

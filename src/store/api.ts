@@ -1,20 +1,41 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ResponseStarWars, Character } from '@/src/types/types';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
+import {
+  SearchAnimeDocument,
+  SearchAnimeQuery,
+  SearchAnimeQueryVariables,
+  GetAnimeDetailsDocument,
+  GetAnimeDetailsQuery,
+  GetAnimeDetailsQueryVariables,
+} from '../gql/graphql';
 
-export const starWarsApi = createApi({
-  reducerPath: 'starWarsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.py4e.com/api/people/' }),
+export const anilistApi = createApi({
+  reducerPath: 'anilistApi',
+  baseQuery: graphqlRequestBaseQuery({
+    url: 'https://graphql.anilist.co',
+    prepareHeaders: (headers) => {
+      headers.set('Content-Type', 'application/json');
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
-    getCharacters: builder.query<
-      ResponseStarWars,
-      { name: string; page: number }
-    >({
-      query: ({ name, page }) => `?search=${name}&page=${page}`,
+    searchAnime: builder.query<SearchAnimeQuery, SearchAnimeQueryVariables>({
+      query: (variables) => ({
+        document: SearchAnimeDocument,
+        variables,
+      }),
     }),
-    getDetails: builder.query<Character, { id: string }>({
-      query: ({ id }) => id,
+
+    getAnimeDetails: builder.query<
+      GetAnimeDetailsQuery,
+      GetAnimeDetailsQueryVariables
+    >({
+      query: (variables) => ({
+        document: GetAnimeDetailsDocument,
+        variables,
+      }),
     }),
   }),
 });
 
-export const { useGetCharactersQuery, useGetDetailsQuery } = starWarsApi;
+export const { useSearchAnimeQuery, useGetAnimeDetailsQuery } = anilistApi;

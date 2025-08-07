@@ -3,12 +3,13 @@ import { useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ReactPaginate from 'react-paginate';
 import { Search } from './Search/Search';
-import { CardList } from './CardList/CardList';
+// import { CardList } from './CardList/CardList';
 import { Spinner } from '@components/UI/Spinner/Spinner';
+import { useEffect } from 'react';
 import { Store } from './Store/Store';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
-import { useGetCharactersQuery } from '@store/api';
+import { useSearchAnimeQuery } from '@store/api';
 import { setSearchName } from '@store/localStorageSlice';
 import styles from './Main.module.scss';
 
@@ -26,10 +27,14 @@ export const Main = () => {
     (state: RootState) => state.selectedCards.selectedCards
   );
 
-  const { data, error, isFetching } = useGetCharactersQuery({
-    name: searchName,
+  const { data, error, isFetching } = useSearchAnimeQuery({
+    search: searchName || undefined,
     page: currentPage,
   });
+
+  useEffect(() => {
+    console.log('Data fetched:', data, currentPage, searchName);
+  }, [data]);
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
@@ -54,12 +59,12 @@ export const Main = () => {
         <Search nameRequest={handleSearch} />
         {isFetching ? (
           <Spinner />
-        ) : error || !data?.results.length ? (
+        ) : error || !data?.Page?.media?.length ? (
           <h2 className={styles.searchList__errorMessage}>Nothing Found</h2>
         ) : (
           <div className={styles.content}>
             <div className={styles.content__left}>
-              <CardList dataCharacters={data?.results || []} />
+              {/* <CardList dataCharacters={data?.results || []} /> */}
               <ReactPaginate
                 previousClassName={`${styles.pagination__item} ${styles.pagination__previous}`}
                 nextClassName={`${styles.pagination__item} ${styles.pagination__next}`}
@@ -67,7 +72,7 @@ export const Main = () => {
                 nextLabel={'Next'}
                 breakLabel={'...'}
                 breakClassName={`${styles.pagination__item} pagination__break-me`}
-                pageCount={Math.ceil((data?.count || 0) / 10)}
+                pageCount={data.Page.pageInfo?.lastPage || 0}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={handlePageChange}
