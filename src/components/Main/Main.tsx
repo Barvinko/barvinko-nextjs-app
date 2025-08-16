@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { Store } from './Store/Store';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
-import { useSearchAnimeQuery } from '@store/api';
+import { useGetPopularMoviesQuery } from '@store/api';
 import { setSearchName } from '@store/localStorageSlice';
 import styles from './Main.module.scss';
 
@@ -27,14 +27,14 @@ export const Main = () => {
     (state: RootState) => state.selectedCards.selectedCards
   );
 
-  const { data, error, isFetching } = useSearchAnimeQuery({
+  const { data, error, isFetching } = useGetPopularMoviesQuery({
     search: searchName || undefined,
     page: currentPage,
   });
 
   useEffect(() => {
     console.log('Data fetched:', data, currentPage, searchName);
-  }, [data]);
+  }, [data, currentPage, searchName]);
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;

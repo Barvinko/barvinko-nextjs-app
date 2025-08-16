@@ -1,16 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { anilistApi } from './api';
+import { tmdbApi } from './api';
 import selectedCardsSlice from './selectedCardsSlice';
 import localStorageReducer from './localStorageSlice';
 
 export const store = configureStore({
   reducer: {
-    [anilistApi.reducerPath]: anilistApi.reducer,
+    [tmdbApi.reducerPath]: tmdbApi.reducer,
     selectedCards: selectedCardsSlice,
     localStorage: localStorageReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(anilistApi.middleware),
+    getDefaultMiddleware().concat(tmdbApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

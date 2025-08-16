@@ -1,41 +1,27 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
-import {
-  SearchAnimeDocument,
-  SearchAnimeQuery,
-  SearchAnimeQueryVariables,
-  GetAnimeDetailsDocument,
-  GetAnimeDetailsQuery,
-  GetAnimeDetailsQueryVariables,
-} from '../gql/graphql';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const anilistApi = createApi({
-  reducerPath: 'anilistApi',
-  baseQuery: graphqlRequestBaseQuery({
-    url: 'https://graphql.anilist.co',
+export const tmdbApi = createApi({
+  reducerPath: 'tmdbApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: process.env.NEXT_PUBLIC_TMDB_API_URL,
     prepareHeaders: (headers) => {
-      headers.set('Content-Type', 'application/json');
+      headers.set(
+        'Authorization',
+        `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
+      );
       return headers;
     },
   }),
   endpoints: (builder) => ({
-    searchAnime: builder.query<SearchAnimeQuery, SearchAnimeQueryVariables>({
-      query: (variables) => ({
-        document: SearchAnimeDocument,
-        variables,
-      }),
+    searchMovies: builder.query({
+      query: ({ query, page = 1, language = 'uk-UA' }) =>
+        `/search/movie?query=${encodeURIComponent(query)}&page=${page}&language=${language}`,
     }),
-
-    getAnimeDetails: builder.query<
-      GetAnimeDetailsQuery,
-      GetAnimeDetailsQueryVariables
-    >({
-      query: (variables) => ({
-        document: GetAnimeDetailsDocument,
-        variables,
-      }),
+    getPopularMovies: builder.query({
+      query: ({ page = 1, language = 'uk-UA' }) =>
+        `/movie/popular?page=${page}&language=${language}`,
     }),
   }),
 });
 
-export const { useSearchAnimeQuery, useGetAnimeDetailsQuery } = anilistApi;
+export const { useSearchMoviesQuery, useGetPopularMoviesQuery } = tmdbApi;
