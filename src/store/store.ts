@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { tmdbApi } from './api';
+import { tmdbApi } from './query/api';
 import selectedCardsSlice from './selectedCardsSlice';
 import localStorageReducer from './localStorageSlice';
 

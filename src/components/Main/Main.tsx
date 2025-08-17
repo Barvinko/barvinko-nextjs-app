@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { Store } from './Store/Store';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
-import { useGetPopularMoviesQuery } from '@store/api';
+import { useGetPopularMoviesQuery } from '@store/query/api';
 import { setSearchName } from '@store/localStorageSlice';
 import styles from './Main.module.scss';
 
@@ -59,7 +59,7 @@ export const Main = () => {
         <Search nameRequest={handleSearch} />
         {isFetching ? (
           <Spinner />
-        ) : error || !data?.Page?.media?.length ? (
+        ) : error || !data?.page ? (
           <h2 className={styles.searchList__errorMessage}>Nothing Found</h2>
         ) : (
           <div className={styles.content}>
@@ -68,11 +68,17 @@ export const Main = () => {
               <ReactPaginate
                 previousClassName={`${styles.pagination__item} ${styles.pagination__previous}`}
                 nextClassName={`${styles.pagination__item} ${styles.pagination__next}`}
-                previousLabel={'Previous'}
-                nextLabel={'Next'}
+                previousLabel={'<'}
+                nextLabel={'>'}
                 breakLabel={'...'}
                 breakClassName={`${styles.pagination__item} pagination__break-me`}
-                pageCount={data.Page.pageInfo?.lastPage || 0}
+                pageCount={
+                  (currentPage < 8
+                    ? data.total_pages < 8
+                      ? data.total_pages
+                      : 8
+                    : currentPage + 1) || 0
+                }
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={handlePageChange}
