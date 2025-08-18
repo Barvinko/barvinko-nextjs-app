@@ -1,40 +1,20 @@
 import type { BaseQueryFn } from '@reduxjs/toolkit/query';
-import { TMDB, type PopularMovies } from 'tmdb-ts';
 
-type TMDBError = {
+interface TMDBError {
   status: 'CUSTOM_ERROR';
-  data: {
-    message: string;
-  };
-};
-
-const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
-
-if (!apiKey) {
-  throw new Error(
-    'TMDB API key is missing. Add NEXT_PUBLIC_TMDB_API_KEY to .env'
-  );
+  data: { message: string };
 }
 
-const tmdb = new TMDB(apiKey);
+type QueryExecutor<T> = () => Promise<T>;
 
 export const tmdbBaseQuery: BaseQueryFn<
-  { type: 'popular'; page?: number; language?: 'uk-UA' },
-  PopularMovies,
+  QueryExecutor<unknown>, // что принимает
+  unknown, // что возвращает
   TMDBError
-> = async ({ type, page = 1, language = 'uk-UA' }) => {
+> = async (executor) => {
   try {
-    if (type === 'popular') {
-      const data = await tmdb.movies.popular({ page, language });
-      return { data };
-    }
-
-    return {
-      error: {
-        status: 'CUSTOM_ERROR',
-        data: { message: `Unsupported query type: ${type}` },
-      },
-    };
+    const data = await executor();
+    return { data };
   } catch (err) {
     return {
       error: {
