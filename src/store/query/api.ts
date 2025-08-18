@@ -16,25 +16,20 @@ export const tmdbApi = createApi({
   reducerPath: 'tmdbApi',
   baseQuery: tmdbBaseQuery,
   endpoints: (builder) => ({
-    searchMovies: builder.query<
+    getMovies: builder.query<
       PopularMovies,
-      { query: string; page?: number; language?: 'uk-UA' }
+      { query?: string; page?: number; language?: 'en-US' }
     >({
       query:
-        ({ query, page = 1, language = 'uk-UA' }) =>
-        () =>
-          tmdb.search.movies({ query, page, language }),
-    }),
-    getPopularMovies: builder.query<
-      PopularMovies,
-      { page?: number; language?: 'uk-UA' }
-    >({
-      query:
-        ({ page = 1, language = 'uk-UA' }) =>
-        () =>
-          tmdb.movies.popular({ page, language }),
+        ({ query, page = 1, language = 'en-US' }) =>
+        () => {
+          if (query && query.trim()) {
+            return tmdb.search.movies({ query, page, language });
+          }
+          return tmdb.movies.popular({ page, language });
+        },
     }),
   }),
 });
 
-export const { useSearchMoviesQuery, useGetPopularMoviesQuery } = tmdbApi;
+export const { useGetMoviesQuery } = tmdbApi;

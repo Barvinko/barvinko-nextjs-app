@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { Store } from './Store/Store';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
-import { useGetPopularMoviesQuery } from '@store/query/api';
+import { useGetMoviesQuery } from '@store/query/api';
 import { setSearchName } from '@store/localStorageSlice';
 import styles from './Main.module.scss';
 
@@ -27,8 +27,8 @@ export const Main = () => {
     (state: RootState) => state.selectedCards.selectedCards
   );
 
-  const { data, error, isFetching } = useGetPopularMoviesQuery({
-    search: searchName || undefined,
+  const { data, error, isFetching } = useGetMoviesQuery({
+    query: searchName || undefined,
     page: currentPage,
   });
 
@@ -59,7 +59,7 @@ export const Main = () => {
         <Search nameRequest={handleSearch} />
         {isFetching ? (
           <Spinner />
-        ) : error || !data?.page ? (
+        ) : error || !data?.results.length ? (
           <h2 className={styles.searchList__errorMessage}>Nothing Found</h2>
         ) : (
           <div className={styles.content}>
