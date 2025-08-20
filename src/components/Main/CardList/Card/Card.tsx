@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { selectCard, unselectCard } from '@store/selectedCardsSlice';
 import { Movie } from 'tmdb-ts';
+import CardBT from 'react-bootstrap/Card';
 import styles from './Card.module.scss';
 
-export const Card = ({ id, title }: Movie) => {
+export const Card = ({ id, title, poster_path }: Movie) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams?.get('page') || '1';
@@ -32,16 +33,25 @@ export const Card = ({ id, title }: Movie) => {
   };
 
   return (
-    <div className={styles.card}>
-      <input
-        className={styles.card__checkbox}
-        type="checkbox"
-        checked={isSelected}
-        onChange={handleCheckboxChange}
+    <CardBT onClick={handleClick}>
+      <CardBT.Img
+        variant="top"
+        className={styles.card__img}
+        src={`https://image.tmdb.org/t/p/w220_and_h330_face${poster_path}`}
       />
-      <h3 className={styles.card__name} onClick={handleClick}>
-        {title}
-      </h3>
-    </div>
+      <CardBT.Body>
+        <CardBT.Title>{title}</CardBT.Title>
+        <CardBT.Text>
+          This is a longer card with supporting text below as a natural lead-in
+          to additional content. This content is a little bit longer.
+        </CardBT.Text>
+        <input
+          className={styles.card__checkbox}
+          type="checkbox"
+          checked={isSelected}
+          onChange={handleCheckboxChange}
+        />
+      </CardBT.Body>
+    </CardBT>
   );
 };

@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Modal from 'react-modal';
 import { Spinner } from '@components/UI/Spinner/Spinner';
 import { ThemeContext } from '@store/ThemeContext';
-import { useGetAnimeDetailsQuery } from '@store/api';
+import { useGetAnimeDetailsQuery } from '@store/query/api';
 import styles from './Details.module.scss';
 
 export const Details = () => {

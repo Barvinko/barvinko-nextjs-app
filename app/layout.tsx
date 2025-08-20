@@ -5,6 +5,7 @@ import { store } from '@store/store';
 import { ErrorBoundary } from '@components/ErrorBoundary/ErrorBoundary';
 import { ThemeProvider } from '@components/ThemeProvider/ThemeProvider';
 import { Layout } from '@components/Layout/Layout';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '@style/index.scss';
 import '@style/class.scss';
 
