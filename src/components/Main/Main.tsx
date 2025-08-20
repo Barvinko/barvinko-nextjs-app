@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ReactPaginate from 'react-paginate';
 import { Search } from './Search/Search';
-// import { CardList } from './CardList/CardList';
+import { CardList } from './CardList/CardList';
 import { Spinner } from '@components/UI/Spinner/Spinner';
 import { useEffect } from 'react';
 import { Store } from './Store/Store';
@@ -64,7 +64,7 @@ export const Main = () => {
         ) : (
           <div className={styles.content}>
             <div className={styles.content__left}>
-              {/* <CardList dataCharacters={data?.results || []} /> */}
+              <CardList dataCharacters={data?.results || []} />
               <ReactPaginate
                 previousClassName={`${styles.pagination__item} ${styles.pagination__previous}`}
                 nextClassName={`${styles.pagination__item} ${styles.pagination__next}`}

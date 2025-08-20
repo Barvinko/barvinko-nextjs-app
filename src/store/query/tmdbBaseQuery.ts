@@ -8,8 +8,8 @@ interface TMDBError {
 type QueryExecutor<T> = () => Promise<T>;
 
 export const tmdbBaseQuery: BaseQueryFn<
-  QueryExecutor<unknown>, // что принимает
-  unknown, // что возвращает
+  QueryExecutor<unknown>,
+  unknown,
   TMDBError
 > = async (executor) => {
   try {

@@ -1,9 +1,9 @@
 import { Card } from './Card/Card';
-import type { Character } from '@/src/types/types';
+import { Movie } from 'tmdb-ts';
 import styles from './CardList.module.scss';
 
 interface CardListProps {
-  dataCharacters: Character[];
+  dataCharacters: Movie[];
 }
 
 export const CardList = ({ dataCharacters }: CardListProps) => {

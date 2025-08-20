@@ -3,14 +3,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { selectCard, unselectCard } from '@store/selectedCardsSlice';
+import { Movie } from 'tmdb-ts';
 import styles from './Card.module.scss';
 
-interface CardProps {
-  name: string;
-  url: string;
-}
-
-export const Card = ({ name, url }: CardProps) => {
+export const Card = ({ id, title }: Movie) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams?.get('page') || '1';
@@ -19,8 +15,6 @@ export const Card = ({ name, url }: CardProps) => {
     (state: RootState) => state.selectedCards.selectedCards
   );
 
-  const parts = url.split('/');
-  const id = parts[parts.length - 2];
   const isSelected = selectedItems.some((card) => card.id === id);
 
   const handleClick = () => {
@@ -33,7 +27,7 @@ export const Card = ({ name, url }: CardProps) => {
     if (isSelected) {
       dispatch(unselectCard(id));
     } else {
-      dispatch(selectCard({ id, name, url }));
+      dispatch(selectCard({ id }));
     }
   };
 
@@ -46,7 +40,7 @@ export const Card = ({ name, url }: CardProps) => {
         onChange={handleCheckboxChange}
       />
       <h3 className={styles.card__name} onClick={handleClick}>
-        {name}
+        {title}
       </h3>
     </div>
   );
