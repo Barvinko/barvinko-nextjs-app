@@ -7,7 +7,7 @@ import { Movie } from 'tmdb-ts';
 import CardBT from 'react-bootstrap/Card';
 import styles from './Card.module.scss';
 
-export const Card = ({ id, title, poster_path }: Movie) => {
+export const Card = ({ id, title, poster_path, overview }: Movie) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams?.get('page') || '1';
@@ -33,7 +33,7 @@ export const Card = ({ id, title, poster_path }: Movie) => {
   };
 
   return (
-    <CardBT onClick={handleClick}>
+    <CardBT className="border-0" onClick={handleClick}>
       <CardBT.Img
         variant="top"
         className={styles.card__img}
@@ -42,8 +42,9 @@ export const Card = ({ id, title, poster_path }: Movie) => {
       <CardBT.Body>
         <CardBT.Title>{title}</CardBT.Title>
         <CardBT.Text>
-          This is a longer card with supporting text below as a natural lead-in
-          to additional content. This content is a little bit longer.
+          {overview
+            ? overview.slice(0, 100) + '...'
+            : 'No description available.'}
         </CardBT.Text>
         <input
           className={styles.card__checkbox}
