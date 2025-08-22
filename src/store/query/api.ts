@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { tmdbBaseQuery } from './tmdbBaseQuery';
-import { TMDB, PopularMovies } from 'tmdb-ts';
+import { TMDB, PopularMovies, MovieDetails } from 'tmdb-ts';
 
 const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
@@ -29,7 +29,14 @@ export const tmdbApi = createApi({
           return tmdb.movies.popular({ page, language });
         },
     }),
+    getDetails: builder.query<MovieDetails, { id: number }>({
+      query:
+        ({ id }) =>
+        () => {
+          return tmdb.movies.details(id);
+        },
+    }),
   }),
 });
 
-export const { useGetMoviesQuery } = tmdbApi;
+export const { useGetMoviesQuery, useGetDetailsQuery } = tmdbApi;
