@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import ReactPaginate from 'react-paginate';
 import { Search } from './Search/Search';
@@ -16,9 +16,7 @@ import styles from './Main.module.scss';
 export const Main = () => {
   const router = useRouter();
   const params = useParams<{ page: string }>();
-  const page = params?.page || '1';
 
-  const [currentPage, setCurrentPage] = useState<number>(parseInt(page, 10));
   const dispatch = useDispatch();
   const searchName = useSelector(
     (state: RootState) => state.localStorage.searchName
@@ -29,23 +27,21 @@ export const Main = () => {
 
   const { data, error, isFetching } = useGetMoviesQuery({
     query: searchName || undefined,
-    page: currentPage,
+    page: parseInt(params?.page),
   });
 
   useEffect(() => {
-    console.log('Data fetched:', data, currentPage, searchName);
-  }, [data, currentPage, searchName]);
+    console.log('Data fetched:', data, parseInt(params?.page), searchName);
+  }, [data, searchName]);
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
-    setCurrentPage(newPage);
     router.push(`/page/${newPage}`);
   };
 
   const handleSearch = useCallback(
     (name: string, page: number) => {
       dispatch(setSearchName(name));
-      setCurrentPage(page);
       router.push(`/page/${page}`);
     },
     [router, dispatch]
@@ -73,11 +69,11 @@ export const Main = () => {
                 breakLabel={'...'}
                 breakClassName={`${styles.pagination__item} pagination__break-me`}
                 pageCount={
-                  (currentPage < 8
+                  (parseInt(params?.page) < 8
                     ? data.total_pages < 8
                       ? data.total_pages
                       : 8
-                    : currentPage + 1) || 0
+                    : parseInt(params?.page) + 1) || 0
                 }
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
@@ -85,7 +81,7 @@ export const Main = () => {
                 containerClassName={styles.pagination}
                 pageClassName={`${styles.pagination__item} ${styles.pagination__page}`}
                 activeClassName={`${styles.pagination__item} ${styles.pagination__page_active}`}
-                forcePage={currentPage - 1}
+                forcePage={parseInt(params?.page) - 1}
               />
             </div>
           </div>

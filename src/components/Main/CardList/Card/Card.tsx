@@ -1,5 +1,5 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { selectCard, unselectCard } from '@store/selectedCardsSlice';
@@ -9,8 +9,8 @@ import styles from './Card.module.scss';
 
 export const Card = ({ id, title, poster_path, overview }: Movie) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const page = searchParams?.get('page') || '1';
+  const params = useParams<{ page: string }>();
+
   const dispatch = useDispatch();
   const selectedItems = useSelector(
     (state: RootState) => state.selectedCards.selectedCards
@@ -24,7 +24,7 @@ export const Card = ({ id, title, poster_path, overview }: Movie) => {
     }
 
     if (id && !isNaN(Number(id))) {
-      router.push(`/page/${page}/details/${id}`, { scroll: false });
+      router.push(`/page/${params?.page}/details/${id}`, { scroll: false });
     }
   };
 
