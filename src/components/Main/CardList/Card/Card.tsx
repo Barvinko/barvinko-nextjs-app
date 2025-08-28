@@ -18,13 +18,18 @@ export const Card = ({ id, title, poster_path, overview }: Movie) => {
 
   const isSelected = selectedItems.some((card) => card.id === id);
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLInputElement).type === 'checkbox') {
+      return;
+    }
+
     if (id && !isNaN(Number(id))) {
-      router.push(`/page/${page}/details/${id}`);
+      router.push(`/page/${page}/details/${id}`, { scroll: false });
     }
   };
 
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
     if (isSelected) {
       dispatch(unselectCard(id));
     } else {
