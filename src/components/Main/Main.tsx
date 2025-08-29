@@ -27,11 +27,15 @@ export const Main = () => {
 
   const { data, error, isFetching } = useGetMoviesQuery({
     query: searchName || undefined,
-    page: parseInt(params?.page),
+    page: getPage(),
   });
 
+  function getPage(): number {
+    return parseInt(params?.page);
+  }
+
   useEffect(() => {
-    console.log('Data fetched:', data, parseInt(params?.page), searchName);
+    console.log('Data fetched:', data, getPage(), searchName);
   }, [data, searchName]);
 
   const handlePageChange = ({ selected }: { selected: number }) => {
@@ -69,11 +73,11 @@ export const Main = () => {
                 breakLabel={'...'}
                 breakClassName={`${styles.pagination__item} pagination__break-me`}
                 pageCount={
-                  (parseInt(params?.page) < 8
+                  (getPage() < 8
                     ? data.total_pages < 8
                       ? data.total_pages
                       : 8
-                    : parseInt(params?.page) + 1) || 0
+                    : getPage() + 1) || 0
                 }
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
@@ -81,7 +85,7 @@ export const Main = () => {
                 containerClassName={styles.pagination}
                 pageClassName={`${styles.pagination__item} ${styles.pagination__page}`}
                 activeClassName={`${styles.pagination__item} ${styles.pagination__page_active}`}
-                forcePage={parseInt(params?.page) - 1}
+                forcePage={getPage() - 1}
               />
             </div>
           </div>
