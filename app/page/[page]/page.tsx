@@ -1,7 +1,7 @@
 'use client';
 import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { useState } from 'react';
-import { Details } from '@components/Main/Details/Details';
+import { Details } from '@components/SearchList/Details/Details';
 import Modal from 'react-modal';
 
 function Page() {

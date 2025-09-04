@@ -1,6 +1,5 @@
 import { useState, ReactNode } from 'react';
 import { ThemeContext } from '@store/ThemeContext';
-import styles from './ThemeProvider.module.scss';
 
 interface ThemeProvider {
   children: ReactNode;
@@ -14,9 +13,7 @@ export const ThemeProvider = ({ children }: ThemeProvider) => {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div className={`body ${theme}`}>
-        <div className={styles.container}>{children}</div>
-      </div>
+      <div className={`body ${theme}`}>{children}</div>
     </ThemeContext.Provider>
   );
 };
