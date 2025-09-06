@@ -21,7 +21,7 @@ export const tmdbApi = createApi({
       { query?: string; page?: number; language?: 'en-US' }
     >({
       query:
-        ({ query, page = 1, language = 'en-US' }) =>
+        ({ query, page = undefined, language = 'en-US' }) =>
         () => {
           if (query && query.trim()) {
             return tmdb.search.movies({ query, page, language });

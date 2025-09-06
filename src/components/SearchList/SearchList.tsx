@@ -30,12 +30,13 @@ export const SearchList = () => {
     page: getPage(),
   });
 
-  function getPage(): number {
-    return parseInt(params?.page);
+  function getPage(): number | undefined {
+    const page = parseInt(params?.page);
+    return Number.isInteger(page) ? page : undefined;
   }
 
   useEffect(() => {
-    console.log('Data fetched:', data, getPage(), searchName);
+    console.log('Data fetched:', data, 'd', getPage(), 'd', searchName);
   }, [data, searchName]);
 
   const handlePageChange = ({ selected }: { selected: number }) => {
@@ -61,33 +62,35 @@ export const SearchList = () => {
       ) : error || !data?.results.length ? (
         <h2 className={styles.searchList__errorMessage}>Nothing Found</h2>
       ) : (
-        <div className={styles.content}>
-          <div className={styles.content__left}>
-            <CardList dataCharacters={data?.results || []} />
-            <ReactPaginate
-              previousClassName={`${styles.pagination__item} ${styles.pagination__previous}`}
-              nextClassName={`${styles.pagination__item} ${styles.pagination__next}`}
-              previousLabel={'<'}
-              nextLabel={'>'}
-              breakLabel={'...'}
-              breakClassName={`${styles.pagination__item} pagination__break-me`}
-              pageCount={
-                (getPage() < 8
-                  ? data.total_pages < 8
-                    ? data.total_pages
-                    : 8
-                  : getPage() + 1) || 0
-              }
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={handlePageChange}
-              containerClassName={styles.pagination}
-              pageClassName={`${styles.pagination__item} ${styles.pagination__page}`}
-              activeClassName={`${styles.pagination__item} ${styles.pagination__page_active}`}
-              forcePage={getPage() - 1}
-            />
+        getPage() && (
+          <div className={styles.content}>
+            <div className={styles.content__left}>
+              <CardList dataCharacters={data?.results || []} />
+              <ReactPaginate
+                previousClassName={`${styles.pagination__item} ${styles.pagination__previous}`}
+                nextClassName={`${styles.pagination__item} ${styles.pagination__next}`}
+                previousLabel={'<'}
+                nextLabel={'>'}
+                breakLabel={'...'}
+                breakClassName={`${styles.pagination__item} pagination__break-me`}
+                pageCount={
+                  ((getPage() as number) < 8
+                    ? data.total_pages < 8
+                      ? data.total_pages
+                      : 8
+                    : (getPage() as number) + 1) || 0
+                }
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageChange}
+                containerClassName={styles.pagination}
+                pageClassName={`${styles.pagination__item} ${styles.pagination__page}`}
+                activeClassName={`${styles.pagination__item} ${styles.pagination__page_active}`}
+                forcePage={(getPage() as number) - 1}
+              />
+            </div>
           </div>
-        </div>
+        )
       )}
       <Store />
     </article>
