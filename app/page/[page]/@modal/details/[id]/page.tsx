@@ -1,5 +1,5 @@
 'use client';
-import { Details } from '@components/Main/Details/Details';
+import { Details } from '@components/SearchList/Details/Details';
 
 function Id() {
   return (
