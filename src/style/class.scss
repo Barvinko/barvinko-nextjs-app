@@ -59,14 +59,10 @@ input {
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: box-shadow 0.25s;
 
   background-color: theme(bg-button);
   color: white;
-
-  &:hover {
-    border-color: #646cff;
-  }
 }
 
 a {
@@ -87,6 +83,12 @@ a {
 .light {
   color: theme(text-color);
   background-color: theme(bg-color);
+
+  .button {
+    &:hover {
+      box-shadow: 0 0 5px theme(bsh-button-hover);
+    }
+  }
 }
 
 .dark {
@@ -100,9 +102,7 @@ a {
   &::-webkit-scrollbar-thumb {
     background: theme(scrollbar-color, $dark);
   }
-}
 
-.dark {
   input {
     background-color: theme(input-bg-color, $dark);
     border-color: theme(input-border-color, $dark);
@@ -112,6 +112,10 @@ a {
   .button {
     background-color: theme(bg-button, $dark);
     color: theme(text-color, $dark);
+
+    &:hover {
+      box-shadow: 0 0 5px theme(bsh-button-hover, $dark);
+    }
   }
 }
 
