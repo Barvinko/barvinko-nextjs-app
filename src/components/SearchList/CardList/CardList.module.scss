@@ -1,12 +1,14 @@
-.cardList__title {
-  text-align: center;
-  font-size: 2.3rem;
-  margin-bottom: 0;
-}
+.cardList {
+  &__title {
+    text-align: center;
+    font-size: 2.3rem;
+    margin-bottom: 0;
+  }
 
-.cardList__cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-  padding-top: 1rem;
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding-top: 1rem;
+  }
 }

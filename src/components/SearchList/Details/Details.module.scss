@@ -15,29 +15,29 @@
   &:global(.dark) {
     background-color: rgba(0, 0, 0, 0.411);
   }
-}
 
-.details__content {
-  padding: 20px;
-  width: 300px;
-  height: fit-content;
-  border-radius: 8px;
-  min-width: 150px;
-  max-width: 250px;
-}
-
-:global(.light) {
-  .details__content {
-    background-color: theme(bg-color);
-    color: theme(text-color);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  &__content {
+    padding: 20px;
+    width: 300px;
+    height: fit-content;
+    border-radius: 8px;
+    min-width: 150px;
+    max-width: 250px;
   }
-}
 
-:global(.dark) {
-  .details__content {
-    background-color: #1d1d1d;
-    color: theme(text-color, $dark);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  &:global(.light) {
+    .details__content {
+      background-color: theme(bg-color);
+      color: theme(text-color);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &:global(.dark) {
+    .details__content {
+      background-color: #1d1d1d;
+      color: theme(text-color, $dark);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
   }
 }

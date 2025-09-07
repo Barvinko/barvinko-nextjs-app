@@ -4,30 +4,30 @@
   align-items: center;
   gap: 10px;
   position: relative;
-}
 
-.search__input {
-  width: 100%;
-  height: 40px;
-  padding: 0 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-  transition: all 0.3s;
-}
+  &__input {
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.3s;
+  }
 
-.search__errorMessage {
-  color: white;
-  background-color: red;
-  font-size: 14px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 10;
+  &__errorMessage {
+    color: white;
+    background-color: red;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
 }

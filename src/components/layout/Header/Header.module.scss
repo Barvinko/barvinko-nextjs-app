@@ -1,10 +1,10 @@
 .header {
   text-align: center;
   padding: 2rem 0;
-}
 
-.header__title {
-  font-size: 3.2em;
-  line-height: 1.1;
-  margin-top: 0;
+  &__title {
+    font-size: 3.2em;
+    line-height: 1.1;
+    margin-top: 0;
+  }
 }

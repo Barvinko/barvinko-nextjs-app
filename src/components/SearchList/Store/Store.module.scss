@@ -8,18 +8,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-}
 
-.store__count {
-  margin: 0;
-}
+  &__count {
+    margin: 0;
+  }
 
-.store__button {
-  border: none;
-  padding: 10px 20px;
-  margin-left: 10px;
-  cursor: pointer;
-  border-radius: 5px;
+  &__button {
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
 }
 
 :global(.light) {
