@@ -75,46 +75,23 @@ a {
   }
 }
 
-.body {
-  width: 100%;
-  min-height: 100vh;
-}
-
-.light {
-  color: theme(text-color);
-  background-color: theme(bg-color);
-
-  .button {
-    &:hover {
-      box-shadow: 0 0 5px theme(bsh-button-hover);
-    }
-  }
-}
-
-.dark {
-  color: theme(text-color, $dark);
-  background-color: theme(bg-color, $dark);
+body {
+  color: var(--text-color);
+  background-color: var(--bg-color);
 
   &::-webkit-scrollbar-track {
-    background: theme(bg-color, $dark);
+    background: var(--bg-color);
   }
 
   &::-webkit-scrollbar-thumb {
-    background: theme(scrollbar-color, $dark);
-  }
-
-  input {
-    background-color: theme(input-bg-color, $dark);
-    border-color: theme(input-border-color, $dark);
-    color: theme(text-color, $dark);
+    background: theme(--scrollbar-color);
   }
 
   .button {
-    background-color: theme(bg-button, $dark);
-    color: theme(text-color, $dark);
-
+    background-color: var(--bg-button);
+    color: var(--cl-button);
     &:hover {
-      box-shadow: 0 0 5px theme(bsh-button-hover, $dark);
+      box-shadow: 0 0 5px var(--bsh-button-hover);
     }
   }
 }

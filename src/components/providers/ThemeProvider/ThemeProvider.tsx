@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { ThemeContext } from '@store/ThemeContext';
 
 interface ThemeProvider {
@@ -7,13 +7,17 @@ interface ThemeProvider {
 
 export const ThemeProvider = ({ children }: ThemeProvider) => {
   const [theme, setTheme] = useState('dark');
+  useEffect(() => {
+    document.documentElement.className = theme;
+  }, [theme]);
+
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
   };
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div className={`body ${theme}`}>{children}</div>
+      {children}
     </ThemeContext.Provider>
   );
 };
