@@ -6,9 +6,7 @@ import { ErrorBoundary } from '@components/providers/ErrorBoundary/ErrorBoundary
 import { ThemeProvider } from '@components/providers/ThemeProvider/ThemeProvider';
 import { Layout } from '@components/layout/Layout/Layout';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '@style/value.scss';
 import '@style/index.scss';
-import '@style/class.scss';
 
 export default function RootLayout({
   children,
@@ -16,8 +14,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="body">
+    <html lang="en">
+      <body id="root">
         <Provider store={store}>
           <ErrorBoundary>
             <ThemeProvider>

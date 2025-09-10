@@ -1,65 +1,14 @@
-#root {
-  position: relative;
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
 
-  width: 100%;
-  display: flex;
-  place-items: center;
-  min-width: 620px;
-  min-height: 100vh;
+  color-scheme: light dark;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: var(--bg-color);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-color);
-    border-radius: 6px;
-  }
-}
-
-body {
-  color: var(--text-color);
-  background-color: var(--bg-color);
-
-  &::-webkit-scrollbar-track {
-    background: var(--bg-color);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-color);
-  }
-}
-
-.errorBoundary {
-  text-align: center;
-  margin: auto;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.read-the-docs {
-  color: #888;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 input {
@@ -67,6 +16,26 @@ input {
   border: 1px solid var(--input-border-color);
   color: var(--text-color);
   padding: 8px;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+
+  &:hover {
+    color: #535bf2;
+  }
+}
+
+#root {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+.errorBoundary {
+  text-align: center;
+  margin: auto;
 }
 
 .button {
@@ -84,15 +53,5 @@ input {
 
   &:hover {
     box-shadow: 0 0 5px var(--bsh-button-hover);
-  }
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-
-  &:hover {
-    color: #535bf2;
   }
 }
