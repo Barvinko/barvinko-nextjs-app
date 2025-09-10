@@ -6,6 +6,7 @@ import { ErrorBoundary } from '@components/providers/ErrorBoundary/ErrorBoundary
 import { ThemeProvider } from '@components/providers/ThemeProvider/ThemeProvider';
 import { Layout } from '@components/layout/Layout/Layout';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@style/value.scss';
 import '@style/index.scss';
 import '@style/class.scss';
 

@@ -1,16 +1,3 @@
-:global(.light) {
-  .spinner {
-    border-color: theme(br-spinner);
-    border-top-color: #304fcc;
-  }
-}
-:global(.dark) {
-  .spinner {
-    border-color: theme(br-spinner, $dark);
-    border-top-color: #304fcc;
-  }
-}
-
 .spinner {
   border: 16px solid;
   border-top: 16px solid;
@@ -19,6 +6,9 @@
   height: 120px;
   animation: spin 2s linear infinite;
   margin: 20px auto;
+
+  border-color: var(--br-spinner);
+  border-top-color: var(--br-top-spinner);
 }
 
 @keyframes spin {

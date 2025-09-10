@@ -16,5 +16,5 @@ export function webpack(config) {
 
 export const sassOptions = {
   includePaths: [join(__dirname, 'styles')],
-  additionalData: `@import "src/style/value.scss";`,
+  additionalData: ``, // e.g., `@import "src/style/value.scss";`
 };

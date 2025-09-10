@@ -23,29 +23,20 @@
     transition: all 0.2s ease;
 
     &:hover {
-      transform: translateY(-2px) scale(1.02);
+      transform: translateY(-1px) scale(1.01);
     }
   }
 
-  :global(.light) & {
-    background-color: #f5f5f5;
-    color: #333;
+  background-color: var(--modal-bg);
+  color: var(--modal-bg-color);
 
-    .store__button:hover {
-      color: theme(cl-button);
-    }
+  .store__button:hover {
+    color: var(--cl-button);
   }
 
   :global(.dark) & {
-    background-color: #1d1d1d;
-    color: white;
-
     .store__button {
       background-color: #304fcc;
-
-      &:hover {
-        color: theme(text-color, $dark);
-      }
     }
   }
 }
