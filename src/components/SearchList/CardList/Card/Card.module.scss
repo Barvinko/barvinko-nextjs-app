@@ -1,4 +1,7 @@
 .card {
+  &__body {
+    position: relative;
+  }
   &__checkbox {
     appearance: none;
     width: 20px;

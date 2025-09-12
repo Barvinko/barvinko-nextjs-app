@@ -4,10 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { selectCard, unselectCard } from '@store/selectedCardsSlice';
 import { Movie } from 'tmdb-ts';
+import { CircularRating } from '@components/UI/CircularRating/CircularRating';
 import CardBT from 'react-bootstrap/Card';
 import styles from './Card.module.scss';
 
-export const Card = ({ id, title, poster_path, overview }: Movie) => {
+export const Card = ({
+  id,
+  title,
+  poster_path,
+  overview,
+  vote_average,
+}: Movie) => {
   const router = useRouter();
   const params = useParams<{ page: string }>();
 
@@ -44,7 +51,8 @@ export const Card = ({ id, title, poster_path, overview }: Movie) => {
         className={styles.card__img}
         src={`https://image.tmdb.org/t/p/w220_and_h330_face${poster_path}`}
       />
-      <CardBT.Body>
+      <CardBT.Body className={styles.card__body}>
+        <CircularRating percent={vote_average} />
         <CardBT.Title>{title}</CardBT.Title>
         <CardBT.Text>
           {overview
