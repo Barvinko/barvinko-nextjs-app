@@ -2,7 +2,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { ThemeProvider } from './ThemeProvider';
 import { ThemeContext } from '@store/ThemeContext';
 import { useContext } from 'react';
-import { describe, it, expect } from 'vitest';
 
 const TestComponent = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -15,7 +14,7 @@ const TestComponent = () => {
 };
 
 describe('ThemeProvider', () => {
-  it('should provide default theme', () => {
+  test('should provide default theme', () => {
     render(
       <ThemeProvider>
         <TestComponent />
