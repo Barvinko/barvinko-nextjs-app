@@ -14,22 +14,19 @@ const TestComponent = () => {
 };
 
 describe('ThemeProvider', () => {
-  test('should provide default theme', () => {
+  beforeEach(() => {
     render(
       <ThemeProvider>
         <TestComponent />
       </ThemeProvider>
     );
+  });
+
+  test('should provide default theme', () => {
     expect(screen.getByTestId('theme-value').textContent).toBe('dark');
   });
 
-  it('should toggle theme', async () => {
-    render(
-      <ThemeProvider>
-        <TestComponent />
-      </ThemeProvider>
-    );
-
+  test('should toggle theme', async () => {
     const button = screen.getByText('Toggle Theme');
     await fireEvent.click(button);
     expect(screen.getByTestId('theme-value').textContent).toBe('light');
