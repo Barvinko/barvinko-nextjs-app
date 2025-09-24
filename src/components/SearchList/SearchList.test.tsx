@@ -1,246 +1,128 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { store } from '@store/store';
-import { Main } from './Main';
-import { vi } from 'vitest';
-import { useGetCharactersQuery } from '@store/api';
-import { useRouter } from 'next/router';
+// src/components/SearchList/SearchList.test.tsx
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { SearchList } from './SearchList';
+import { useRouter, useParams } from 'next/navigation';
+import { useSelector, useDispatch } from 'react-redux';
+import { useGetMoviesQuery } from '@store/query/api';
+import { Movie } from 'tmdb-ts';
+import { mockPopularMovies } from '@/mocks/mockDate';
 
-vi.mock('next/router', () => ({
-  useRouter: vi.fn(),
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+  useParams: jest.fn(),
+}));
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(),
+  useDispatch: jest.fn(),
+}));
+jest.mock('@store/query/api', () => ({
+  useGetMoviesQuery: jest.fn(),
+}));
+jest.mock('./Search/Search', () => ({
+  Search: ({
+    nameRequest,
+  }: {
+    nameRequest: (a: string, b: number) => void;
+  }) => <button onClick={() => nameRequest('test', 1)}>SearchBtn</button>,
+}));
+jest.mock('./CardList/CardList', () => ({
+  CardList: ({ dataCharacters }: { dataCharacters: Movie[] }) => (
+    <div>
+      {dataCharacters.map((c: Movie) => (
+        <div key={c.id}>{c.title}</div>
+      ))}
+    </div>
+  ),
+}));
+jest.mock('./Store/Store', () => ({
+  Store: () => <div>StoreComponent</div>,
 }));
 
-vi.mock('@store/api', async (importOriginal) => {
-  const actual = (await importOriginal()) as typeof import('@store/api');
-  return {
-    ...actual,
-    useGetCharactersQuery: vi.fn(),
-  };
-});
+describe('SearchList', () => {
+  const mockPush = jest.fn();
+  const mockDispatch = jest.fn();
 
-test('renders Main component', () => {
-  vi.mocked(useRouter).mockReturnValue({
-    query: { page: '1' },
-    push: vi.fn(),
-    route: '',
-    pathname: '',
-    asPath: '',
-    basePath: '',
-    replace: vi.fn(),
-    reload: vi.fn(),
-    back: vi.fn(),
-    forward: vi.fn(),
-    prefetch: vi.fn().mockResolvedValue(undefined),
-    beforePopState: vi.fn(),
-    isFallback: false,
-    events: {
-      on: vi.fn(),
-      off: vi.fn(),
-      emit: vi.fn(),
-    },
-    isReady: true,
-    isPreview: false,
-    isLocaleDomain: false,
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
+    (
+      useDispatch as unknown as jest.MockedFunction<typeof useDispatch>
+    ).mockReturnValue(mockDispatch);
+    (useParams as jest.Mock).mockReturnValue({ page: '2' });
+
+    (
+      useSelector as unknown as jest.MockedFunction<typeof useSelector>
+    ).mockImplementation((cb) =>
+      cb({
+        localStorage: { searchName: '' },
+        selectedCards: { selectedCards: [] },
+      })
+    );
+
+    (useGetMoviesQuery as jest.Mock).mockReturnValue({
+      data: mockPopularMovies,
+      error: undefined,
+      isFetching: false,
+    });
   });
 
-  (useGetCharactersQuery as jest.Mock).mockReturnValue({
-    data: { results: [] },
-    isFetching: false,
-    error: null,
+  test('renders spinner when loading', () => {
+    (useGetMoviesQuery as jest.Mock).mockReturnValue({
+      data: undefined,
+      error: undefined,
+      isFetching: true,
+    });
+
+    render(<SearchList />);
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 
-  render(
-    <Provider store={store}>
-      <Main />
-    </Provider>
-  );
-  expect(screen.getByText('Nothing Found')).toBeInTheDocument();
-});
+  it('renders error message when error or no results', () => {
+    (useGetMoviesQuery as jest.Mock).mockReturnValue({
+      data: { results: [] },
+      error: undefined,
+      isFetching: false,
+    });
 
-test('handles search and displays results', async () => {
-  vi.mocked(useRouter).mockReturnValue({
-    query: { page: '1' },
-    push: vi.fn(),
-    route: '',
-    pathname: '',
-    asPath: '',
-    basePath: '',
-    replace: vi.fn(),
-    reload: vi.fn(),
-    back: vi.fn(),
-    forward: vi.fn(),
-    prefetch: vi.fn().mockResolvedValue(undefined),
-    beforePopState: vi.fn(),
-    isFallback: false,
-    events: {
-      on: vi.fn(),
-      off: vi.fn(),
-      emit: vi.fn(),
-    },
-    isReady: true,
-    isPreview: false,
-    isLocaleDomain: false,
-  });
-
-  (useGetCharactersQuery as jest.Mock).mockReturnValue({
-    data: {
-      results: [
-        { name: 'Luke Skywalker', url: 'https://swapi.dev/api/people/1/' },
-      ],
-    },
-    isFetching: false,
-    error: null,
-  });
-
-  render(
-    <Provider store={store}>
-      <Main />
-    </Provider>
-  );
-
-  const input = screen.getByPlaceholderText('Name...');
-  fireEvent.change(input, { target: { value: 'Luke' } });
-  const button = screen.getByText('Search');
-  fireEvent.click(button);
-
-  await waitFor(() => {
-    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
-  });
-});
-
-test('displays error message on request error', async () => {
-  vi.mocked(useRouter).mockReturnValue({
-    query: { page: '1' },
-    push: vi.fn(),
-    route: '',
-    pathname: '',
-    asPath: '',
-    basePath: '',
-    replace: vi.fn(),
-    reload: vi.fn(),
-    back: vi.fn(),
-    forward: vi.fn(),
-    prefetch: vi.fn().mockResolvedValue(undefined),
-    beforePopState: vi.fn(),
-    isFallback: false,
-    events: {
-      on: vi.fn(),
-      off: vi.fn(),
-      emit: vi.fn(),
-    },
-    isReady: true,
-    isPreview: false,
-    isLocaleDomain: false,
-  });
-
-  (useGetCharactersQuery as jest.Mock).mockReturnValue({
-    data: null,
-    isFetching: false,
-    error: { status: 404 },
-  });
-
-  render(
-    <Provider store={store}>
-      <Main />
-    </Provider>
-  );
-
-  await waitFor(() => {
+    render(<SearchList />);
     expect(screen.getByText('Nothing Found')).toBeInTheDocument();
   });
-});
 
-test('handles pagination', async () => {
-  const push = vi.fn();
-  vi.mocked(useRouter).mockReturnValue({
-    query: { page: '1' },
-    push,
-    route: '',
-    pathname: '',
-    asPath: '',
-    basePath: '',
-    replace: vi.fn(),
-    reload: vi.fn(),
-    back: vi.fn(),
-    forward: vi.fn(),
-    prefetch: vi.fn().mockResolvedValue(undefined),
-    beforePopState: vi.fn(),
-    isFallback: false,
-    events: {
-      on: vi.fn(),
-      off: vi.fn(),
-      emit: vi.fn(),
-    },
-    isReady: true,
-    isPreview: false,
-    isLocaleDomain: false,
+  it('renders CardList and pagination when data is present', () => {
+    render(<SearchList />);
+    expect(screen.getByText(/Slayer/)).toBeInTheDocument();
+    expect(screen.getByText(/Lord/)).toBeInTheDocument();
+    expect(screen.getByRole('navigation')).toBeInTheDocument();
   });
 
-  (useGetCharactersQuery as jest.Mock).mockReturnValue({
-    data: {
-      results: [
-        { name: 'Luke Skywalker', url: 'https://swapi.dev/api/people/1/' },
-      ],
-      count: 20,
-    },
-    isFetching: false,
-    error: null,
+  it('calls router.push on page change', () => {
+    render(<SearchList />);
+    const nextBtn = screen.getByText('>');
+    fireEvent.click(nextBtn);
+    expect(mockPush).toHaveBeenCalled();
   });
 
-  render(
-    <Provider store={store}>
-      <Main />
-    </Provider>
-  );
-
-  await waitFor(() => {
-    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+  it('dispatches setSearchName and router.push on search', () => {
+    render(<SearchList />);
+    fireEvent.click(screen.getByText('SearchBtn'));
+    expect(mockDispatch).toHaveBeenCalled();
+    expect(mockPush).toHaveBeenCalledWith('/page/1');
   });
 
-  const nextButton = screen.getByText('Next');
-  fireEvent.click(nextButton);
+  it('applies selected class when selectedCards is not empty', () => {
+    (
+      useSelector as unknown as jest.MockedFunction<typeof useSelector>
+    ).mockImplementation((cb) =>
+      cb({
+        localStorage: { searchName: '' },
+        selectedCards: { selectedCards: [1, 2] },
+      })
+    );
 
-  await waitFor(() => {
-    expect(push).toHaveBeenCalledWith('/page/2');
+    const { container } = render(<SearchList />);
+    expect(
+      container.querySelector('[class*="searchList_selected"]')
+    ).toBeInTheDocument();
   });
-});
-
-test('displays loading spinner while fetching data', () => {
-  vi.mocked(useRouter).mockReturnValue({
-    query: { page: '1' },
-    push: vi.fn(),
-    route: '',
-    pathname: '',
-    asPath: '',
-    basePath: '',
-    replace: vi.fn(),
-    reload: vi.fn(),
-    back: vi.fn(),
-    forward: vi.fn(),
-    prefetch: vi.fn().mockResolvedValue(undefined),
-    beforePopState: vi.fn(),
-    isFallback: false,
-    events: {
-      on: vi.fn(),
-      off: vi.fn(),
-      emit: vi.fn(),
-    },
-    isReady: true,
-    isPreview: false,
-    isLocaleDomain: false,
-  });
-
-  (useGetCharactersQuery as jest.Mock).mockReturnValue({
-    data: null,
-    isFetching: true,
-    error: null,
-  });
-
-  render(
-    <Provider store={store}>
-      <Main />
-    </Provider>
-  );
-
-  expect(screen.getByTestId('spinner')).toBeInTheDocument();
 });
