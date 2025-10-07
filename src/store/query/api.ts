@@ -1,6 +1,6 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { tmdbBaseQuery } from './tmdbBaseQuery';
-import { TMDB, PopularMovies, MovieDetails } from 'tmdb-ts';
+// src/store/query/api.ts
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { PopularMovies, MovieDetails } from 'tmdb-ts';
 
 const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
@@ -10,31 +10,36 @@ if (!apiKey) {
   );
 }
 
-const tmdb = new TMDB(apiKey);
-
 export const tmdbApi = createApi({
   reducerPath: 'tmdbApi',
-  baseQuery: tmdbBaseQuery,
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://api.themoviedb.org/3',
+    prepareHeaders: (headers) => {
+      headers.set('Authorization', `Bearer ${apiKey}`);
+      headers.set('accept', 'application/json');
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getMovies: builder.query<
       PopularMovies,
-      { query?: string; page?: number; language?: 'en-US' }
+      { query?: string; page?: number; language?: string }
     >({
-      query:
-        ({ query, page = undefined, language = 'en-US' }) =>
-        () => {
-          if (query && query.trim()) {
-            return tmdb.search.movies({ query, page, language });
-          }
-          return tmdb.movies.popular({ page, language });
-        },
+      query: ({ query, page = 1, language = 'en-US' }) => {
+        if (query && query.trim()) {
+          return {
+            url: '/search/movie',
+            params: { query, page, language },
+          };
+        }
+        return {
+          url: '/movie/popular',
+          params: { page, language },
+        };
+      },
     }),
     getDetails: builder.query<MovieDetails, { id: number }>({
-      query:
-        ({ id }) =>
-        () => {
-          return tmdb.movies.details(id);
-        },
+      query: ({ id }) => `/movie/${id}`,
     }),
   }),
 });
