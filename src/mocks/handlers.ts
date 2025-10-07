@@ -1,8 +1,11 @@
 import { http, HttpResponse } from 'msw';
 import { mockPopularMovies, mockMovieDetails } from './mockDate';
 
+const BASE_URL = 'https://api.themoviedb.org/3';
+
 export const handlers = [
-  http.get('/1/movie/popular', ({ request }) => {
+  http.get(`${BASE_URL}/movie/popular`, ({ request }) => {
+    console.log('MSW: handling /movie/popular');
     const url = new URL(request.url);
     const page = url.searchParams.get('page') ?? '1';
 
@@ -12,7 +15,8 @@ export const handlers = [
     });
   }),
 
-  http.get('/2/search/movie', ({ request }) => {
+  http.get(`${BASE_URL}/search/movie`, ({ request }) => {
+    console.log('MSW: handling /search/movie');
     const url = new URL(request.url);
     const query = url.searchParams.get('query') ?? '';
 
@@ -26,38 +30,15 @@ export const handlers = [
     });
   }),
 
-  http.get('/1/movie/:id', ({ params }) => {
+  http.get(`${BASE_URL}/movie/:id`, ({ params }) => {
+    console.log('MSW: handling /movie/:id', params.id);
     const { id } = params;
     if (Number(id) === mockMovieDetails.id) {
       return HttpResponse.json(mockMovieDetails);
     }
     return HttpResponse.json(
-      { message: 'Movie not found', code: 'MOVIE_NOT_FOUND' },
+      { status_message: 'The resource you requested could not be found.' },
       { status: 404 }
     );
-  }),
-
-  http.get('/1/movie/error', () => {
-    return HttpResponse.json(
-      { message: 'Internal Server Error', code: 'INTERNAL_ERROR' },
-      { status: 500 }
-    );
-  }),
-
-  http.get('/1/movie/slow', async () => {
-    await new Promise((resolve) => setTimeout(resolve, 2500));
-    return HttpResponse.json({
-      page: 1,
-      results: [
-        {
-          id: 201,
-          title: 'Slow Movie',
-          overview: 'Loaded with delay...',
-          vote_average: 5.5,
-        },
-      ],
-      total_pages: 1,
-      total_results: 1,
-    });
   }),
 ];

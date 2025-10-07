@@ -11,8 +11,9 @@
     "preview": "vite preview",
     "format:fix": "prettier --write .",
     "prepare": "husky",
-    "test": "npm run clean:coverage && jest --coverage",
+    "test": "jest",
     "clean:coverage": "rimraf coverage",
+    "test:coverage": "npm run clean:coverage && jest --coverage",
     "lint-staged": "lint-staged"
   },
   "dependencies": {
