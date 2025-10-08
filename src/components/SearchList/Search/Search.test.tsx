@@ -1,36 +1,30 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { store } from '@store/store';
+import { screen, fireEvent } from '@testing-library/react';
 import { Search } from './Search';
-import { vi } from 'vitest';
+import { renderWithStore } from '@utilities/renderWithStore';
 
-test('renders Search component and handles input', () => {
-  const mockNameRequest = vi.fn();
-  render(
-    <Provider store={store}>
-      <Search nameRequest={mockNameRequest} />
-    </Provider>
-  );
+describe('SearchList', () => {
+  it('renders Search component and handles input', () => {
+    const mockNameRequest = jest.fn();
+    renderWithStore(<Search nameRequest={mockNameRequest} />);
 
-  const input = screen.getByPlaceholderText('Name...');
-  fireEvent.change(input, { target: { value: 'Luke' } });
-  expect(input).toHaveValue('Luke');
+    const input = screen.getByPlaceholderText('Name...');
+    fireEvent.change(input, { target: { value: 'Slayer' } });
+    expect(input).toHaveValue('Slayer');
 
-  const button = screen.getByText('Search');
-  fireEvent.click(button);
-  expect(mockNameRequest).toHaveBeenCalledWith('Luke', 1);
-});
+    const button = screen.getByText('Search');
+    fireEvent.click(button);
+    expect(mockNameRequest).toHaveBeenCalledWith('Slayer', 1);
+  });
 
-test('displays error message for invalid input', () => {
-  render(
-    <Provider store={store}>
-      <Search nameRequest={vi.fn()} />
-    </Provider>
-  );
+  it('displays error message for invalid input', () => {
+    renderWithStore(<Search nameRequest={jest.fn()} />);
 
-  const input = screen.getByPlaceholderText('Name...');
-  fireEvent.change(input, { target: { value: 'Luke@' } });
-  expect(
-    screen.getByText('Only letters, numbers, spaces, and hyphens are allowed.')
-  ).toBeInTheDocument();
+    const input = screen.getByPlaceholderText('Name...');
+    fireEvent.change(input, { target: { value: 'Slayer@' } });
+    expect(
+      screen.getByText(
+        'Only letters, numbers, spaces, and hyphens are allowed.'
+      )
+    ).toBeInTheDocument();
+  });
 });
