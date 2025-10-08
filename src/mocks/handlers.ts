@@ -2,10 +2,10 @@ import { http, HttpResponse } from 'msw';
 import { mockPopularMovies, mockMovieDetails } from './mockDate';
 
 const BASE_URL = 'https://api.themoviedb.org/3';
+export const MOVIE_POPULAR_URL = `${BASE_URL}/movie/popular`;
 
 export const handlers = [
-  http.get(`${BASE_URL}/movie/popular`, ({ request }) => {
-    console.log('MSW: handling /movie/popular');
+  http.get(MOVIE_POPULAR_URL, ({ request }) => {
     const url = new URL(request.url);
     const page = url.searchParams.get('page') ?? '1';
 
@@ -16,7 +16,6 @@ export const handlers = [
   }),
 
   http.get(`${BASE_URL}/search/movie`, ({ request }) => {
-    console.log('MSW: handling /search/movie');
     const url = new URL(request.url);
     const query = url.searchParams.get('query') ?? '';
 
@@ -31,7 +30,6 @@ export const handlers = [
   }),
 
   http.get(`${BASE_URL}/movie/:id`, ({ params }) => {
-    console.log('MSW: handling /movie/:id', params.id);
     const { id } = params;
     if (Number(id) === mockMovieDetails.id) {
       return HttpResponse.json(mockMovieDetails);

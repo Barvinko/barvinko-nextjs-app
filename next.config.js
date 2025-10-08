@@ -9,7 +9,7 @@ export function webpack(config) {
   config.resolve.alias['@pages'] = join(__dirname, 'src/pages');
   config.resolve.alias['@style'] = join(__dirname, 'src/style');
   config.resolve.alias['@store'] = join(__dirname, 'src/store');
-  config.resolve.alias['@utilits'] = join(__dirname, 'src/utilits');
+  config.resolve.alias['@utilities'] = join(__dirname, 'src/utilities');
   config.resolve.alias['@/src/types'] = join(__dirname, 'src/types');
   return config;
 }

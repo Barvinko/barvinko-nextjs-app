@@ -17,7 +17,7 @@ const customJestConfig = {
       '<rootDir>/__mocks__/fileMock.js',
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@components/(.*)$': '<rootDir>/src/components/$1',
-    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+    '^@utilities/(.*)$': '<rootDir>/src/utils/$1',
     '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
     '^@store/(.*)$': '<rootDir>/src/store/$1',
   },

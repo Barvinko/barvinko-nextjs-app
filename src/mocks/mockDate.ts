@@ -1,6 +1,5 @@
 import { PopularMovies, MovieDetails } from 'tmdb-ts';
 
-// Мок данные
 export const mockPopularMovies: PopularMovies = {
   page: 2,
   results: [
@@ -98,4 +97,14 @@ export const mockMovieDetails: MovieDetails = {
   video: false,
   vote_average: 7.65,
   vote_count: 204,
+};
+
+export const cardMock = (id: number) => {
+  return {
+    id: id,
+    title: 'Example',
+    poster_path: '',
+    overview: '',
+    vote_average: 0,
+  };
 };

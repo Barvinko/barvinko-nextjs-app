@@ -6,7 +6,7 @@
       "@pages/*": ["src/pages/*"],
       "@style/*": ["src/style/*"],
       "@store/*": ["src/store/*"],
-      "@utilits/*": ["src/utilits/*"],
+      "@utilities/*": ["src/utilities/*"],
       "@/src/types/*": ["src/types/*"],
       "@/*": ["src/*"]
     },
