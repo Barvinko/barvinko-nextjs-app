@@ -9,7 +9,7 @@ import {
   waitForWrap,
 } from '@utilities/test-utility';
 import { renderWithStore } from '@utilities/renderWithStore';
-import { cardMock } from '@/mocks/mockDate';
+import { cardMock, mockPopularMoviesTitle } from '@/mocks/mockDate';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
@@ -42,8 +42,12 @@ describe('SearchList', () => {
     renderWithStore(<SearchList />);
     await waitForWrap();
 
-    expect(screen.getAllByText(/Demon Slayer/i)[0]).toBeInTheDocument();
-    expect(screen.getAllByText(/Lord of the Rings/i)[0]).toBeInTheDocument();
+    expect(
+      screen.getAllByText(new RegExp(mockPopularMoviesTitle[0], 'i'))[0]
+    ).toBeInTheDocument();
+    expect(
+      screen.getAllByText(new RegExp(mockPopularMoviesTitle[1], 'i'))[0]
+    ).toBeInTheDocument();
 
     expect(screen.getByRole('navigation')).toBeInTheDocument();
   });

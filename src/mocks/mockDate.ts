@@ -1,5 +1,10 @@
 import { PopularMovies, MovieDetails } from 'tmdb-ts';
 
+export const mockPopularMoviesTitle = [
+  'Demon Slayer: Kimetsu no Yaiba Infinity Castle',
+  'The Lord of the Rings: The Return of the King',
+];
+
 export const mockPopularMovies: PopularMovies = {
   page: 2,
   results: [
@@ -15,7 +20,7 @@ export const mockPopularMovies: PopularMovies = {
       popularity: 780.4859,
       poster_path: '/aFRDH3P7TX61FVGpaLhKr6QiOC1.jpg',
       release_date: '2025-07-18',
-      title: 'Demon Slayer: Kimetsu no Yaiba Infinity Castle',
+      title: mockPopularMoviesTitle[0],
       video: false,
       vote_average: 7.638,
       vote_count: 203,
@@ -32,7 +37,7 @@ export const mockPopularMovies: PopularMovies = {
       popularity: 22.333,
       poster_path: '/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg',
       release_date: '2025-07-18',
-      title: 'The Lord of the Rings: The Return of the King',
+      title: mockPopularMoviesTitle[1],
       video: false,
       vote_average: 8.9,
       vote_count: 2030,
