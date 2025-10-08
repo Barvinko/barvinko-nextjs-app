@@ -1,99 +1,52 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { store } from '@store/store';
+import { screen, fireEvent } from '@testing-library/react';
+import { useRouter, useParams } from 'next/navigation';
 import { Card } from './Card';
-import { Character } from '@/src/types/types';
-import { vi, Mock } from 'vitest'; // Import Mock
-import { useRouter } from 'next/router';
-import { NextRouter } from 'next/router'; // Import NextRouter
-import { createContext } from 'react';
+import { renderWithStore } from '@utilities/renderWithStore';
+import { mockPopularMovies, mockPopularMoviesTitle } from '@/mocks/mockDate';
 
-const createMockRouter = (overrides: Partial<NextRouter>): NextRouter => ({
-  route: '',
-  pathname: '',
-  query: {},
-  asPath: '',
-  basePath: '',
-  push: vi.fn(),
-  replace: vi.fn(),
-  reload: vi.fn(),
-  back: vi.fn(),
-  forward: vi.fn(),
-  prefetch: vi.fn().mockResolvedValue(undefined),
-  beforePopState: vi.fn(),
-  isFallback: false,
-  events: {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn(),
-  },
-  isReady: true,
-  isPreview: false,
-  isLocaleDomain: false,
-  ...overrides,
-});
-
-vi.mock('next/router', () => ({
-  useRouter: vi.fn(),
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+  useParams: jest.fn(),
 }));
 
-const mockCharacter: Character = {
-  name: 'Luke Skywalker',
-  height: '172',
-  mass: '77',
-  birth_year: '19BBY',
-  gender: 'male',
-  url: 'https://swapi.dev/api/people/1/',
-};
+describe('SearchList', () => {
+  const mockPush = jest.fn();
 
-const mockRouter = createMockRouter({ query: { page: '1' } });
-const RouterContext = createContext<NextRouter>(mockRouter);
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
+    (useParams as jest.Mock).mockReturnValue({ page: '1' });
+  });
 
-beforeEach(() => {
-  vi.clearAllMocks();
-  (useRouter as Mock).mockReturnValue(mockRouter);
-});
+  test('renders Card component with character name', () => {
+    renderWithStore(<Card {...mockPopularMovies.results[0]} />);
 
-test('renders Card component with character name', () => {
-  render(
-    <RouterContext.Provider value={mockRouter}>
-      <Provider store={store}>
-        <Card {...mockCharacter} />
-      </Provider>
-    </RouterContext.Provider>
-  );
+    expect(
+      screen.getAllByText(new RegExp(mockPopularMoviesTitle[0], 'i'))[0]
+    ).toBeInTheDocument();
+  });
 
-  expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
-});
+  test('navigates to details page on click', () => {
+    renderWithStore(<Card {...mockPopularMovies.results[0]} />);
 
-test('navigates to details page on click', () => {
-  render(
-    <RouterContext.Provider value={mockRouter}>
-      <Provider store={store}>
-        <Card {...mockCharacter} />
-      </Provider>
-    </RouterContext.Provider>
-  );
+    fireEvent.click(
+      screen.getAllByText(new RegExp(mockPopularMoviesTitle[0], 'i'))[0]
+    );
+    expect(mockPush).toHaveBeenCalledWith('/page/1/details/1', {
+      scroll: false,
+    });
+  });
 
-  fireEvent.click(screen.getByText('Luke Skywalker'));
-  expect(mockRouter.push).toHaveBeenCalledWith('/page/1/details/1');
-});
+  test('checkbox toggles state on click', () => {
+    renderWithStore(<Card {...mockPopularMovies.results[0]} />);
 
-test('checkbox toggles state on click', () => {
-  render(
-    <RouterContext.Provider value={mockRouter}>
-      <Provider store={store}>
-        <Card {...mockCharacter} />
-      </Provider>
-    </RouterContext.Provider>
-  );
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).not.toBeChecked();
 
-  const checkbox = screen.getByRole('checkbox');
-  expect(checkbox).not.toBeChecked();
+    fireEvent.click(checkbox);
+    expect(checkbox).toBeChecked();
 
-  fireEvent.click(checkbox);
-  expect(checkbox).toBeChecked();
-
-  fireEvent.click(checkbox);
-  expect(checkbox).not.toBeChecked();
+    fireEvent.click(checkbox);
+    expect(checkbox).not.toBeChecked();
+  });
 });
