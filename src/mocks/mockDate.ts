@@ -64,7 +64,7 @@ export const mockMovieDetails: MovieDetails = {
     },
   ],
   homepage: 'https://www.demonslayer-movie.com',
-  id: 1311031,
+  id: 1,
   imdb_id: 'tt32820897',
   original_language: 'ja',
   original_title: '劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来',

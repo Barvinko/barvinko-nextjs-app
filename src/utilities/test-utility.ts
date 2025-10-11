@@ -5,7 +5,7 @@ import { http, HttpResponse } from 'msw';
 import { screen, waitFor } from '@testing-library/react';
 import localStorageReducer from '@store/localStorageSlice';
 import selectedCardsReducer from '@store/selectedCardsSlice';
-import { MOVIE_POPULAR_URL } from '@/mocks/handlers';
+import { BASE_URL, MOVIE_POPULAR_URL } from '@/mocks/handlers';
 
 export interface RootState {
   [tmdbApi.reducerPath]: ReturnType<typeof tmdbApi.reducer>;
@@ -38,7 +38,7 @@ export const createTestStore = (preloadedState?: CreateTestStoreOptions) => {
 
 export const mockEmptyResponse = () =>
   server.use(
-    http.get(MOVIE_POPULAR_URL, () => {
+    http.get(`${BASE_URL}${MOVIE_POPULAR_URL}`, () => {
       return HttpResponse.json({
         page: 1,
         results: [],
@@ -48,9 +48,9 @@ export const mockEmptyResponse = () =>
     })
   );
 
-export const mockErrorResponse = () =>
+export const mockErrorResponse = (url: string) =>
   server.use(
-    http.get(MOVIE_POPULAR_URL, () => {
+    http.get(`${BASE_URL}${url}`, () => {
       return HttpResponse.json(
         { status_message: 'Internal Server Error' },
         { status: 500 }

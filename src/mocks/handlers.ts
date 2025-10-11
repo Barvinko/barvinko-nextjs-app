@@ -1,11 +1,11 @@
 import { http, HttpResponse } from 'msw';
 import { mockPopularMovies, mockMovieDetails } from './mockDate';
 
-const BASE_URL = 'https://api.themoviedb.org/3';
-export const MOVIE_POPULAR_URL = `${BASE_URL}/movie/popular`;
+export const BASE_URL = 'https://api.themoviedb.org/3';
+export const MOVIE_POPULAR_URL = '/movie/popular';
 
 export const handlers = [
-  http.get(MOVIE_POPULAR_URL, ({ request }) => {
+  http.get(`${BASE_URL}${MOVIE_POPULAR_URL}`, ({ request }) => {
     const url = new URL(request.url);
     const page = url.searchParams.get('page') ?? '1';
 
