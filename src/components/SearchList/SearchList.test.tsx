@@ -10,6 +10,7 @@ import {
 } from '@utilities/test-utility';
 import { renderWithStore } from '@utilities/renderWithStore';
 import { cardMock, mockPopularMoviesTitle } from '@/mocks/mockDate';
+import { MOVIE_POPULAR_URL } from '@/mocks/handlers';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
@@ -96,7 +97,7 @@ describe('SearchList', () => {
   });
 
   it('renders error message when API returns error', async () => {
-    mockErrorResponse();
+    mockErrorResponse(MOVIE_POPULAR_URL);
     renderWithStore(<SearchList />);
 
     await waitForWrap();
