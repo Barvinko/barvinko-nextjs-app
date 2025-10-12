@@ -46,7 +46,6 @@
     "next-env.d.ts",
     "pages",
     "src",
-    "vite.config.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]

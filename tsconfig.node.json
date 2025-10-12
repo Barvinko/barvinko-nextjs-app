@@ -29,6 +29,5 @@
       "@store/*": ["src/store/*"],
       "@style/*": ["src/style/*"]
     }
-  },
-  "include": ["vite.config.ts"]
+  }
 }
