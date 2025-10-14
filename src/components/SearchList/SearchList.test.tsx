@@ -9,7 +9,7 @@ import {
   waitForWrap,
 } from '@utilities/test-utility';
 import { renderWithStore } from '@utilities/renderWithStore';
-import { cardMock, mockPopularMoviesTitle } from '@/mocks/mockDate';
+import { mockPopularMovies, mockPopularMoviesTitle } from '@/mocks/mockDate';
 import { MOVIE_POPULAR_URL } from '@/mocks/handlers';
 
 jest.mock('next/navigation', () => ({
@@ -83,7 +83,7 @@ describe('SearchList', () => {
     const testStore = createTestStore({
       localStorage: { searchName: '' },
       selectedCards: {
-        selectedCards: [cardMock(1), cardMock(2)],
+        selectedCards: mockPopularMovies.results,
       },
     });
 

@@ -103,13 +103,3 @@ export const mockMovieDetails: MovieDetails = {
   vote_average: 7.65,
   vote_count: 204,
 };
-
-export const cardMock = (id: number) => {
-  return {
-    id: id,
-    title: 'Example',
-    poster_path: '',
-    overview: '',
-    vote_average: 0,
-  };
-};
