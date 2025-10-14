@@ -1,11 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface Card {
-  id: number;
-}
+import { Movie } from 'tmdb-ts';
 
 interface SelectedCardsState {
-  selectedCards: Card[];
+  selectedCards: Movie[];
 }
 
 const initialState: SelectedCardsState = {
@@ -16,7 +13,7 @@ const selectedCardsSlice = createSlice({
   name: 'selectedCards',
   initialState,
   reducers: {
-    selectCard: (state, action: PayloadAction<Card>) => {
+    selectCard: (state, action: PayloadAction<Movie>) => {
       state.selectedCards.push(action.payload);
     },
     unselectCard: (state, action: PayloadAction<number>) => {

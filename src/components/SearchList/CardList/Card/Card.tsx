@@ -8,13 +8,7 @@ import { CircularRating } from '@components/UI/CircularRating/CircularRating';
 import CardBT from 'react-bootstrap/Card';
 import styles from './Card.module.scss';
 
-export const Card = ({
-  id,
-  title,
-  poster_path,
-  overview,
-  vote_average,
-}: Movie) => {
+export const Card = (movie: Movie) => {
   const router = useRouter();
   const params = useParams<{ page: string }>();
 
@@ -22,6 +16,8 @@ export const Card = ({
   const selectedItems = useSelector(
     (state: RootState) => state.selectedCards.selectedCards
   );
+
+  const { id, title, poster_path, overview, vote_average } = movie;
 
   const isSelected = selectedItems.some((card) => card.id === id);
 
@@ -40,7 +36,7 @@ export const Card = ({
     if (isSelected) {
       dispatch(unselectCard(id));
     } else {
-      dispatch(selectCard({ id }));
+      dispatch(selectCard(movie));
     }
   };
 

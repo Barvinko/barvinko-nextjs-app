@@ -14,12 +14,20 @@ export const Store = () => {
   };
 
   const handleDownload = (): string => {
+    const indent = '  ';
+
     const csvContent = [
-      'The Characters of StarWars',
-      ...selectedCards.map(
-        (character, index) => `${index + 1}.${character.name}: ${character.url}`
+      'My Movie List',
+      ...selectedCards.map((movie, index) =>
+        [
+          `${index + 1}.${movie.title}`,
+          `${indent}Vote Average: ${movie.vote_average}`,
+          `${indent}Release Date: ${movie.release_date}`,
+          `${indent}"${movie.overview}"`,
+          `${indent}Poster: https://image.tmdb.org/t/p/w220_and_h330_face${movie.poster_path}`,
+        ].join('\n')
       ),
-    ].join('\n');
+    ].join('\n\n');
 
     const blow = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     return URL.createObjectURL(blow);
@@ -40,7 +48,7 @@ export const Store = () => {
       </button>
       <a
         href={handleDownload()}
-        download={`${selectedCards.length}_characters_of_StarWars.csv`}
+        download={`${selectedCards.length}_My_Movies.csv`}
         className={`button ${styles.store__button}`}
       >
         Download
