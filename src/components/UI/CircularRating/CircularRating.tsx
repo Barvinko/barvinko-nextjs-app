@@ -8,6 +8,12 @@ interface CircularRatingProps {
   className?: string;
 }
 
+export const ratingColor = {
+  high: '#21d07a',
+  medium: '#d2d531',
+  low: '#db2360',
+};
+
 export const CircularRating: React.FC<CircularRatingProps> = ({
   percent,
   size = 45,
@@ -18,9 +24,9 @@ export const CircularRating: React.FC<CircularRatingProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const getRatingColor = (percentInt: number) => {
-    if (percentInt >= 70) return '#21d07a';
-    if (percentInt >= 40) return '#d2d531';
-    return '#db2360';
+    if (percentInt >= 70) return ratingColor.high;
+    if (percentInt >= 40) return ratingColor.medium;
+    return ratingColor.low;
   };
 
   useEffect(() => {
