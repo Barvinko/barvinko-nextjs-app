@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { selectCard, unselectCard } from '@store/selectedCardsSlice';
 import { Movie } from 'tmdb-ts';
+import Form from 'react-bootstrap/Form';
 import { CircularRating } from '@components/UI/CircularRating/CircularRating';
 import CardBT from 'react-bootstrap/Card';
 import styles from './Card.module.scss';
@@ -41,7 +42,7 @@ export const Card = (movie: Movie) => {
   };
 
   return (
-    <CardBT className="border-0" onClick={handleClick}>
+    <CardBT className="position-relative border-0" onClick={handleClick}>
       <CardBT.Img
         variant="top"
         className={styles.card__img}
@@ -55,13 +56,15 @@ export const Card = (movie: Movie) => {
             ? overview.slice(0, 100) + '...'
             : 'No description available.'}
         </CardBT.Text>
-        <input
-          className={styles.card__checkbox}
-          type="checkbox"
-          checked={isSelected}
-          onChange={handleCheckboxChange}
-        />
       </CardBT.Body>
+      <Form.Check
+        className={styles.card__checkbox}
+        aria-label="option 1"
+        checked={isSelected}
+        onChange={handleCheckboxChange}
+      >
+        <Form.Check.Input className={styles.card__checkboxInput} />
+      </Form.Check>
     </CardBT>
   );
 };
