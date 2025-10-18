@@ -22,18 +22,11 @@ export const Card = (movie: Movie) => {
 
   const isSelected = selectedItems.some((card) => card.id === id);
 
-  const handleClick = (e: React.MouseEvent) => {
-    if ((e.target as HTMLInputElement).type === 'checkbox') {
-      return;
-    }
-
-    if (id && !isNaN(Number(id))) {
-      router.push(`/page/${params?.page}/details/${id}`, { scroll: false });
-    }
+  const handleClick = () => {
+    router.push(`/page/${params?.page}/details/${id}`, { scroll: false });
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.stopPropagation();
+  const handleCheckboxChange = () => {
     if (isSelected) {
       dispatch(unselectCard(id));
     } else {
@@ -57,14 +50,12 @@ export const Card = (movie: Movie) => {
             : 'No description available.'}
         </CardBT.Text>
       </CardBT.Body>
-      <Form.Check
-        className={styles.card__checkbox}
-        aria-label="option 1"
+      <Form.Check.Input
         checked={isSelected}
+        onClick={(e) => e.stopPropagation()}
         onChange={handleCheckboxChange}
-      >
-        <Form.Check.Input className={styles.card__checkboxInput} />
-      </Form.Check>
+        className={styles.card__checkbox}
+      />
     </CardBT>
   );
 };
