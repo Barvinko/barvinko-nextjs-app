@@ -35,7 +35,7 @@ export const Card = (movie: Movie) => {
   };
 
   return (
-    <CardBT className="position-relative border-0" onClick={handleClick}>
+    <CardBT className={styles.card} onClick={handleClick}>
       <CardBT.Img
         variant="top"
         className={styles.card__img}
