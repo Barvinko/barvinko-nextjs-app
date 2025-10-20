@@ -1,11 +1,10 @@
 'use client';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import ReactPaginate from 'react-paginate';
 import { Search } from './Search/Search';
 import { CardList } from './CardList/CardList';
 import { Spinner } from '@components/UI/Spinner/Spinner';
-import { useEffect } from 'react';
 import { Store } from './Store/Store';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
@@ -16,6 +15,7 @@ import styles from './SearchList.module.scss';
 export const SearchList = () => {
   const router = useRouter();
   const params = useParams<{ page: string }>();
+  const isFirstRender = useRef(true);
 
   const dispatch = useDispatch();
   const searchName = useSelector(
@@ -25,24 +25,51 @@ export const SearchList = () => {
     (state: RootState) => state.selectedCards.selectedCards
   );
 
-  const { data, error, isFetching } = useGetMoviesQuery({
+  const currentPage = getPage();
+
+  // Мемоизируем параметры запроса
+  const queryParams = {
     query: searchName || undefined,
-    page: getPage(),
+    page: currentPage,
+  };
+
+  const { data, error, isFetching } = useGetMoviesQuery(queryParams, {
+    // Предотвращаем лишние запросы
+    skip: !currentPage,
+    // Кэшируем результаты
+    refetchOnMountOrArgChange: false,
+    refetchOnFocus: false,
+    refetchOnReconnect: false,
   });
 
   function getPage(): number | undefined {
     const page = parseInt(params?.page);
-    return Number.isInteger(page) ? page : undefined;
+    return Number.isInteger(page) && page > 0 ? page : undefined;
   }
 
+  // Логируем только один раз при изменении данных
   useEffect(() => {
-    console.log('Data fetched:', data, 'd', getPage(), 'd', searchName);
-  }, [data, searchName]);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    console.log(
+      'Data fetched:',
+      data,
+      'page:',
+      currentPage,
+      'search:',
+      searchName
+    );
+  }, [data?.page]); // Следим только за page в data
 
-  const handlePageChange = ({ selected }: { selected: number }) => {
-    const newPage = selected + 1;
-    router.push(`/page/${newPage}`);
-  };
+  const handlePageChange = useCallback(
+    ({ selected }: { selected: number }) => {
+      const newPage = selected + 1;
+      router.push(`/page/${newPage}`);
+    },
+    [router]
+  );
 
   const handleSearch = useCallback(
     (name: string, page: number) => {
@@ -62,7 +89,7 @@ export const SearchList = () => {
       ) : error || !data?.results.length ? (
         <h2 className={styles.searchList__errorMessage}>Nothing Found</h2>
       ) : (
-        getPage() && (
+        currentPage && (
           <div className={styles.content}>
             <div className={styles.content__left}>
               <CardList dataCharacters={data?.results || []} />
@@ -74,11 +101,11 @@ export const SearchList = () => {
                 breakLabel={'...'}
                 breakClassName={`${styles.pagination__item} pagination__break-me`}
                 pageCount={
-                  ((getPage() as number) < 8
+                  (currentPage < 8
                     ? data.total_pages < 8
                       ? data.total_pages
                       : 8
-                    : (getPage() as number) + 1) || 0
+                    : currentPage + 1) || 0
                 }
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
@@ -86,7 +113,7 @@ export const SearchList = () => {
                 containerClassName={styles.pagination}
                 pageClassName={`${styles.pagination__item} ${styles.pagination__page}`}
                 activeClassName={`${styles.pagination__item} ${styles.pagination__page_active}`}
-                forcePage={(getPage() as number) - 1}
+                forcePage={currentPage - 1}
               />
             </div>
           </div>
