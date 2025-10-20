@@ -4,7 +4,7 @@ interface LocalStorageState {
   searchName: string;
 }
 
-const keyName = 'Barvinko_StarWars__name';
+const keyName = 'searchName';
 const initialState: LocalStorageState = {
   searchName:
     typeof localStorage !== 'undefined'

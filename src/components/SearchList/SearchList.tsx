@@ -27,16 +27,13 @@ export const SearchList = () => {
 
   const currentPage = getPage();
 
-  // Мемоизируем параметры запроса
   const queryParams = {
     query: searchName || undefined,
     page: currentPage,
   };
 
   const { data, error, isFetching } = useGetMoviesQuery(queryParams, {
-    // Предотвращаем лишние запросы
     skip: !currentPage,
-    // Кэшируем результаты
     refetchOnMountOrArgChange: false,
     refetchOnFocus: false,
     refetchOnReconnect: false,
@@ -47,7 +44,6 @@ export const SearchList = () => {
     return Number.isInteger(page) && page > 0 ? page : undefined;
   }
 
-  // Логируем только один раз при изменении данных
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -61,7 +57,7 @@ export const SearchList = () => {
       'search:',
       searchName
     );
-  }, [data?.page]); // Следим только за page в data
+  }, [data?.page]);
 
   const handlePageChange = useCallback(
     ({ selected }: { selected: number }) => {
