@@ -4,31 +4,55 @@
   left: 0;
   width: 100%;
   min-width: 630px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 10px 20px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--modal-bg);
+  color: var(--modal-bg-color);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    max-width: 1500px;
+  }
 
   &__count {
     margin: 0;
+    font-size: 1.2rem;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
   }
 
   &__button {
     border: none;
     padding: 10px 20px;
-    margin-left: 10px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 12px;
     transition: all 0.2s ease;
+    text-align: center;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 
     &:hover {
       transform: translateY(-1px) scale(1.01);
     }
   }
 
-  background-color: var(--modal-bg);
-  color: var(--modal-bg-color);
+  &__icon {
+    font-size: 1.5rem;
+  }
 
   .store__button:hover {
     color: var(--cl-button);
@@ -37,6 +61,35 @@
   :global(.dark) & {
     .store__button {
       background-color: #304fcc;
+    }
+  }
+}
+
+@media (max-width: 630px) {
+  .store {
+    min-width: 100%;
+    padding: 20px 16px;
+
+    &__container {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    &__count {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+
+    &__actions {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    &__button {
+      width: 100%;
+      padding: 14px 24px;
+      font-size: 1rem;
     }
   }
 }

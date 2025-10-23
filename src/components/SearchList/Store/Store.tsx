@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { unselectCard } from '@store/selectedCardsSlice';
+import { IoMdDownload, IoMdClose } from 'react-icons/io';
 import styles from './Store.module.scss';
 
 export const Store = () => {
@@ -37,22 +38,28 @@ export const Store = () => {
 
   return (
     <div className={styles.store}>
-      <p className={styles.store__count}>
-        {selectedCards.length} Characters are selected
-      </p>
-      <button
-        className={`button ${styles.store__button}`}
-        onClick={handleUnselectAll}
-      >
-        Unselect all
-      </button>
-      <a
-        href={handleDownload()}
-        download={`${selectedCards.length}_My_Movies.csv`}
-        className={`button ${styles.store__button}`}
-      >
-        Download
-      </a>
+      <div className={styles.store__container}>
+        <p className={styles.store__count}>Selected: {selectedCards.length}</p>
+        <div className={styles.store__actions}>
+          <button
+            className={`button ${styles.store__button} ${styles['store__button-unselect']}`}
+            onClick={handleUnselectAll}
+            aria-label="Unselect all movies"
+          >
+            <IoMdClose className={styles.store__icon} />
+            Unselect all
+          </button>
+          <a
+            href={handleDownload()}
+            download={`${selectedCards.length}_My_Movies.csv`}
+            className={`button ${styles.store__button} ${styles['store__button-download']}`}
+            aria-label="Download selected movies"
+          >
+            <IoMdDownload className={styles.store__icon} />
+            Download
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

@@ -32,7 +32,7 @@ describe('Store Component', () => {
 
     renderWithStore(<Store />, store);
 
-    expect(screen.getByText('1 Characters are selected')).toBeInTheDocument();
+    expect(screen.getByText('Selected: 1')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: /unselect all/i })
     ).toBeInTheDocument();
@@ -48,7 +48,7 @@ describe('Store Component', () => {
 
     renderWithStore(<Store />, store);
 
-    expect(screen.getByText('2 Characters are selected')).toBeInTheDocument();
+    expect(screen.getByText('Selected: 2')).toBeInTheDocument();
   });
 
   it('should dispatch unselectCard for all selected cards when clicking Unselect all', () => {
