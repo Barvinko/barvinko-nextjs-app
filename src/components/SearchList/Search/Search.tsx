@@ -1,11 +1,15 @@
-import { useState, useCallback, ChangeEvent } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import styles from './Search.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { setSearchName } from '@store/localStorageSlice';
 
+interface FormValues {
+  query: string;
+}
+
 interface SearchProps {
-  nameRequest: (name: string, page: number) => void;
+  nameRequest: (name: string) => void;
 }
 
 export const Search = ({ nameRequest }: SearchProps) => {
@@ -13,42 +17,39 @@ export const Search = ({ nameRequest }: SearchProps) => {
   const localName = useSelector(
     (state: RootState) => state.localStorage.searchName
   );
-  const [inputName, setInputName] = useState<string>(localName);
-  const [regexName] = useState(/^[a-zA-Z0-9\s-]*$/);
-  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSearchClick = useCallback(() => {
-    const trimmedName = inputName.trim();
-    nameRequest(trimmedName, 1);
-    dispatch(setSearchName(trimmedName));
-  }, [inputName, nameRequest, dispatch]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: { query: localName ?? '' },
+  });
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value;
-    if (regexName.test(name)) {
-      setInputName(name);
-      setErrorMessage('');
-    } else {
-      setErrorMessage(
-        'Only letters, numbers, spaces, and hyphens are allowed.'
-      );
-    }
+  const onSubmit: SubmitHandler<FormValues> = ({ query }) => {
+    const trimmed = query.trim();
+    nameRequest(trimmed);
+    dispatch(setSearchName(trimmed));
   };
 
   return (
     <section className={styles.search}>
-      <input
-        className={styles.search__input}
-        type="search"
-        placeholder="Name..."
-        value={inputName}
-        onChange={handleInputChange}
-      />
-      <button className="button" onClick={handleSearchClick}>
-        Search
-      </button>
-      {errorMessage && (
-        <p className={styles.search__errorMessage}>{errorMessage}</p>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={styles.searchSection__form}
+      >
+        <input
+          className={styles.search__input}
+          type="search"
+          placeholder="Search movie..."
+          {...register('query')}
+        />
+        <button type="submit" className="button">
+          Search
+        </button>
+      </form>
+      {errors.query && (
+        <p className={styles.search__errorMessage}>{errors.query.message}</p>
       )}
     </section>
   );

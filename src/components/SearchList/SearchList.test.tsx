@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { SearchList } from './SearchList';
 import { useRouter, useParams } from 'next/navigation';
 import {
@@ -66,15 +66,17 @@ describe('SearchList', () => {
 
     await waitForWrap();
 
-    const searchInput = screen.getByPlaceholderText('Name...');
+    const searchInput = screen.getByPlaceholderText('Search movie...');
     fireEvent.change(searchInput, { target: { value: 'Lord' } });
 
-    fireEvent.click(screen.getByText('Search'));
+    fireEvent.submit(screen.getByText('Search'));
 
-    expect(mockPush).toHaveBeenCalledWith('/page/1');
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith('/page/1');
 
-    const state = testStore.getState();
-    expect(state.localStorage.searchName).toBe('Lord');
+      const state = testStore.getState();
+      expect(state.localStorage.searchName).toBe('Lord');
+    });
   });
 
   it('applies selected class when selectedCards is not empty', async () => {
@@ -111,13 +113,16 @@ describe('SearchList', () => {
 
     await waitForWrap();
 
-    const searchInput = screen.getByPlaceholderText('Name...');
+    const searchInput = screen.getByPlaceholderText('Search movie...');
     fireEvent.change(searchInput, { target: { value: 'Slayer' } });
 
     fireEvent.click(screen.getByText('Search'));
 
-    expect(mockPush).toHaveBeenCalledWith('/page/1');
-
-    await waitForWrap('Demon Slayer');
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith('/page/1');
+      expect(
+        screen.getAllByText(new RegExp('Demon Slayer', 'i'))[0]
+      ).toBeInTheDocument();
+    });
   });
 });

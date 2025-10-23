@@ -68,9 +68,9 @@ export const SearchList = () => {
   );
 
   const handleSearch = useCallback(
-    (name: string, page: number) => {
+    (name: string) => {
       dispatch(setSearchName(name));
-      router.push(`/page/${page}`);
+      router.push('/page/1');
     },
     [router, dispatch]
   );
