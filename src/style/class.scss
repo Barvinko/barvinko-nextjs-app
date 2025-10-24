@@ -11,13 +11,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-input {
-  background-color: var(--input-bg-color);
-  border: 1px solid var(--input-border-color);
-  color: var(--text-color);
-  padding: 8px;
-}
-
 a {
   font-weight: 500;
   color: #646cff;
@@ -31,11 +24,18 @@ a {
 #root {
   color: var(--text-color);
   background-color: var(--bg-color);
+  overflow-x: hidden;
 }
 
 .errorBoundary {
   text-align: center;
   margin: auto;
+}
+
+.section-fluid {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 .button {

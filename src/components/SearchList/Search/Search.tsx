@@ -33,24 +33,34 @@ export const Search = ({ nameRequest }: SearchProps) => {
   };
 
   return (
-    <section className={styles.search}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={styles.searchSection__form}
-      >
-        <input
-          className={styles.search__input}
-          type="search"
-          placeholder="Search movie..."
-          {...register('query')}
-        />
-        <button type="submit" className="button">
-          Search
-        </button>
-      </form>
-      {errors.query && (
-        <p className={styles.search__errorMessage}>{errors.query.message}</p>
-      )}
+    <section className={`section-fluid ${styles.searchSection}`}>
+      <h2 className={styles.searchSection__title}>
+        We&apos;ll find your film!
+      </h2>
+      <div className={styles.searchSection__content}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={styles.searchSection__form}
+        >
+          <input
+            className={styles.searchSection__input}
+            type="search"
+            placeholder="Search movie..."
+            {...register('query')}
+          />
+          <button
+            type="submit"
+            className={`button ${styles.searchSection__button}`}
+          >
+            Search
+          </button>
+        </form>
+        {errors.query && (
+          <p className={styles.searchSection__errorMessage}>
+            {errors.query.message}
+          </p>
+        )}
+      </div>
     </section>
   );
 };
