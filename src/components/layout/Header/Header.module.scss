@@ -9,6 +9,12 @@
   top: 0;
   z-index: 100;
 
+  &__container-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
   &__title {
     font-size: 2rem;
     font-weight: 700;
@@ -22,11 +28,15 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     transition: all 0.3s ease;
+    cursor: pointer;
+  }
 
-    &:hover {
-      transform: scale(1.05);
-      filter: brightness(1.2);
-    }
+  &__link {
+    font-size: 1.3rem;
+    text-decoration: none;
+    margin: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
   }
 
   &__button {
@@ -45,13 +55,6 @@
     min-width: 60px;
     height: 45px;
 
-    &:hover {
-      background-color: rgba(48, 79, 204, 0.3);
-      border-color: #304fcc;
-      transform: translateY(-2px) scale(1.05);
-      box-shadow: 0 5px 15px rgba(48, 79, 204, 0.4);
-    }
-
     &:active {
       transform: translateY(0) scale(0.98);
     }
@@ -64,6 +67,11 @@
 
     &__title {
       font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    &__link {
+      font-size: 1rem;
       letter-spacing: 1px;
     }
 
@@ -80,8 +88,17 @@
   .header {
     padding: 0.6rem 3%;
 
+    &__container-links {
+      gap: 1rem;
+    }
+
     &__title {
       font-size: 1.3rem;
+    }
+
+    &__link {
+      font-size: 0.7rem;
+      letter-spacing: 1px;
     }
 
     &__button {
@@ -89,6 +106,23 @@
       padding: 0.3rem 0.6rem;
       min-width: 45px;
       height: 38px;
+    }
+  }
+}
+
+@media (hover: hover) {
+  .header {
+    &__title:hover,
+    &__link:hover {
+      transform: scale(1.05);
+      filter: brightness(1.2);
+    }
+
+    &__button:hover {
+      background-color: rgba(48, 79, 204, 0.4);
+      border-color: #304fcc;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 5px 15px rgba(48, 79, 204, 0.5);
     }
   }
 }
