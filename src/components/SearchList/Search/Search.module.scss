@@ -1,19 +1,11 @@
 .searchSection {
   display: flex;
   flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
   padding: 10%;
   gap: 10px;
   position: relative;
-  // height: 20vh;
 
-  background-image: image-set(
-    url('https://media.themoviedb.org/t/p/w1920_and_h600_multi_faces_filter(duotone,00192f,00baff)/tt79dbOPd9Z9ykEOpvckttgYXwH.jpg')
-      1x,
-    url('https://media.themoviedb.org/t/p/w3840_and_h1200_multi_faces_filter(duotone,00192f,00baff)/tt79dbOPd9Z9ykEOpvckttgYXwH.jpg')
-      2x
-  );
+  background-image: image-set(url(https://media.themoviedb.org/t/p/w1920_and_h600_multi_faces_filter\(duotone,00192f,00baff\)/u7OpeS4eckBSR1wFxFTuyy3FjHE.jpg)1x,url(https://media.themoviedb.org/t/p/w3840_and_h1200_multi_faces_filter\(duotone,00192f,00baff\)/u7OpeS4eckBSR1wFxFTuyy3FjHE.jpg)2x);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -21,13 +13,11 @@
 
   &__content {
     width: 100%;
-    // padding: 30px 40px;
   }
 
   &__form {
     display: flex;
     background-color: white;
-    // overflow: hidden;
     border-radius: 25px;
     height: 45px;
   }

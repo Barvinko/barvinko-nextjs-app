@@ -79,7 +79,7 @@ export const SearchList = () => {
     <article
       className={`${styles.searchList} ${selectedCards.length > 0 ? styles.searchList_selected : ''}`}
     >
-      <Search nameRequest={handleSearch} />
+      {!isFetching && <Search nameRequest={handleSearch} />}
       {isFetching ? (
         <Spinner />
       ) : error || !data?.results.length ? (

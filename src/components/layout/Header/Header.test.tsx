@@ -12,17 +12,17 @@ describe('Header Component', () => {
   });
 
   test('renders Header component', () => {
-    expect(screen.getByText('The Characters of StarWars')).toBeInTheDocument();
+    expect(screen.getByText('TMDB')).toBeInTheDocument();
   });
 
   test('toggles theme when button is clicked', () => {
     const button = screen.getByRole('button');
-    expect(button).toHaveTextContent('🌙');
+    expect(screen.getByTestId('moon-icon')).toBeInTheDocument();
 
     fireEvent.click(button);
-    expect(button).toHaveTextContent('☀️');
+    expect(screen.queryByTestId('sun-icon')).toBeInTheDocument();
 
     fireEvent.click(button);
-    expect(button).toHaveTextContent('🌙');
+    expect(screen.getByTestId('moon-icon')).toBeInTheDocument();
   });
 });
