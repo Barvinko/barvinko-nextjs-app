@@ -61,9 +61,6 @@
   &__page_active a {
     color: white;
   }
-  &__page_active a:hover {
-    color: white;
-  }
 }
 
 .content {
@@ -75,5 +72,13 @@
 
   &__right.modal-open .content__left {
     width: 60%;
+  }
+}
+
+@media (hover: hover) {
+  .pagination {
+    &__page_active a:hover {
+      color: white;
+    }
   }
 }

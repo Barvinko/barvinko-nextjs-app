@@ -17,8 +17,12 @@
     color: #007bff;
     text-decoration: none;
   }
+}
 
-  &__link:hover {
-    text-decoration: underline;
+@media (hover: hover) {
+  .notFound {
+    &__link:hover {
+      text-decoration: underline;
+    }
   }
 }

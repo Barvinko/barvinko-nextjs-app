@@ -44,18 +44,10 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-
-    &:hover {
-      transform: translateY(-1px) scale(1.01);
-    }
   }
 
   &__icon {
     font-size: 1.5rem;
-  }
-
-  .store__button:hover {
-    color: var(--cl-button);
   }
 
   :global(.dark) & {
@@ -90,6 +82,17 @@
       width: 100%;
       padding: 14px 24px;
       font-size: 1rem;
+    }
+  }
+}
+
+@media (hover: hover) {
+  .store {
+    &__button:hover {
+      transform: translateY(-1px) scale(1.01);
+    }
+    .store__button:hover {
+      color: var(--cl-button);
     }
   }
 }
