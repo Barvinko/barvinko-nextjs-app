@@ -48,6 +48,18 @@ a {
   color: var(--cl-button);
 }
 
+@media (max-width: 768px) {
+  :root {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    font-size: 10px;
+  }
+}
+
 @media (hover: hover) {
   .button:hover {
     box-shadow: 0 0 5px var(--bsh-button-hover);

@@ -13,6 +13,7 @@
     display: flex;
     align-items: center;
     gap: 2rem;
+    color: #fff;
   }
 
   &__title {
@@ -20,7 +21,6 @@
     font-weight: 700;
     line-height: 1.1;
     margin: 0;
-    color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     letter-spacing: 2px;
     background: linear-gradient(135deg, #00baff 0%, #304fcc 100%);
@@ -66,17 +66,14 @@
     padding: 0.8rem 5%;
 
     &__title {
-      font-size: 1.5rem;
       letter-spacing: 1px;
     }
 
     &__link {
-      font-size: 1rem;
       letter-spacing: 1px;
     }
 
     &__button {
-      font-size: 1.2rem;
       padding: 0.4rem 0.8rem;
       min-width: 50px;
       height: 40px;
@@ -86,23 +83,7 @@
 
 @media (max-width: 480px) {
   .header {
-    padding: 0.6rem 3%;
-
-    &__container-links {
-      gap: 1rem;
-    }
-
-    &__title {
-      font-size: 1.3rem;
-    }
-
-    &__link {
-      font-size: 0.7rem;
-      letter-spacing: 1px;
-    }
-
     &__button {
-      font-size: 1rem;
       padding: 0.3rem 0.6rem;
       min-width: 45px;
       height: 38px;
