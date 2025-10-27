@@ -223,10 +223,10 @@
         &::before {
           width: 200px;
           height: 200px;
+        }
 
-          svg {
-            transform: rotate(180deg);
-          }
+        svg {
+          transform: rotate(180deg);
         }
       }
 

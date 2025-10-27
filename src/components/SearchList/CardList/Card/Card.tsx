@@ -40,13 +40,17 @@ export const Card = (movie: Movie) => {
         variant="top"
         className={styles.card__img}
         src={`https://image.tmdb.org/t/p/w220_and_h330_face${poster_path}`}
+        alt={title || 'Movie poster'}
+        loading="lazy"
       />
       <CardBT.Body className={styles.card__body}>
         <CircularRating percent={vote_average} />
         <CardBT.Title>{title}</CardBT.Title>
         <CardBT.Text>
           {overview
-            ? overview.slice(0, 100) + '...'
+            ? overview.length > 120
+              ? overview.slice(0, 120) + '...'
+              : overview
             : 'No description available.'}
         </CardBT.Text>
       </CardBT.Body>
@@ -55,6 +59,7 @@ export const Card = (movie: Movie) => {
         onClick={(e) => e.stopPropagation()}
         onChange={handleCheckboxChange}
         className={styles.card__checkbox}
+        aria-label={`Select ${title}`}
       />
     </CardBT>
   );

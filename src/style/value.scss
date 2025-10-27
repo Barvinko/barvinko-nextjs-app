@@ -1,33 +1,75 @@
 :root {
   --br-top-spinner: #304fcc;
+  --gradient-primary: linear-gradient(135deg, #00baff 0%, #304fcc 100%);
+  --gradient-secondary: linear-gradient(
+    135deg,
+    rgb(3, 37, 65) 0%,
+    rgb(1, 25, 45) 100%
+  );
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.25);
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.4s ease;
 }
 
 :root.light {
   --text-color: #213547;
-  --bg-color: #ffffff;
+  --text-secondary: #64748b;
+  --bg-color: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
   --bg-button: #6e6e6e;
   --bsh-button-hover: #1a1a1a;
   --cl-button: #ffffff;
   --br-spinner: #cfcfcf;
   --scrollbar-color: #ccc;
   --input-bg-color: #fff;
-  --input-border-color: #ccc;
-  --details-bg-color: var(--bg-color);
-  --modal-bg: #f5f5f5;
-  --modal-color: var(#333);
+  --input-border-color: #e2e8f0;
+  --details-bg-color: var(--bg-secondary);
+  --modal-bg: #ffffff;
+  --modal-color: #333;
+  --card-bg: #ffffff;
+  --card-hover-shadow: 0 12px 48px rgba(48, 79, 204, 0.15);
+  --border-color: #e2e8f0;
+  --overlay-bg: rgba(255, 255, 255, 0.95);
+  --checkbox-bg: rgba(255, 255, 255, 0.9);
+  --checkbox-checked: #0d6efd;
+  --rating-bg: rgba(3, 37, 65, 0.9);
+  --error-color: #dc2626;
+  --error-bg: #fee2e2;
+  --success-color: #16a34a;
 }
 
 :root.dark {
-  --text-color: rgba(255, 255, 255, 0.87);
-  --bg-color: #242424;
+  --text-color: rgba(255, 255, 255, 0.92);
+  --text-secondary: #94a3b8;
+  --bg-color: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
   --bg-button: #1a1a1a;
   --bsh-button-hover: #4400ff;
   --cl-button: var(--text-color);
   --br-spinner: #f3f3f3;
   --scrollbar-color: #555;
-  --input-bg-color: #000000;
-  --input-border-color: #666;
-  --details-bg-color: #1d1d1d;
-  --modal-bg: var(--details-bg-color);
-  --modal-color: var(white);
+  --input-bg-color: #1e293b;
+  --input-border-color: #334155;
+  --details-bg-color: #1e293b;
+  --modal-bg: #1e293b;
+  --modal-color: white;
+  --card-bg: #1e293b;
+  --card-hover-shadow: 0 12px 48px rgba(0, 186, 255, 0.25);
+  --border-color: #334155;
+  --overlay-bg: rgba(15, 23, 42, 0.95);
+  --checkbox-bg: rgba(30, 41, 59, 0.9);
+  --checkbox-checked: #304fcc;
+  --rating-bg: rgba(0, 186, 255, 0.15);
+  --error-color: #ef4444;
+  --error-bg: #7f1d1d;
+  --success-color: #22c55e;
 }

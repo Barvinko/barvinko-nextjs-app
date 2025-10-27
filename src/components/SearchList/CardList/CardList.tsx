@@ -9,7 +9,6 @@ interface CardListProps {
 export const CardList = ({ dataCharacters }: CardListProps) => {
   return (
     <section className={styles.cardList}>
-      <h2 className={styles.cardList__title}>Result:</h2>
       <div className={styles.cardList__cards}>
         {dataCharacters.map((character, index) => (
           <Card key={index} {...character} />
