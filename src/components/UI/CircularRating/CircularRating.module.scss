@@ -2,6 +2,7 @@
   display: inline-block;
   position: absolute;
   top: calc(var(--size) * -0.73);
+  right: 0.8rem;
 
   &__circle {
     position: relative;

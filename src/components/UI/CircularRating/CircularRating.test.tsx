@@ -1,5 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { CircularRating, ratingColor } from './CircularRating';
+import { CircularRating } from './CircularRating';
+import { ratingColor } from '@utilities/useCircularRatingDrawing';
+
+const resizeWindow = (width: number) => {
+  window.innerWidth = width;
+  window.dispatchEvent(new Event('resize'));
+};
 
 describe('CircularRating Component', () => {
   let mockCtx: CanvasRenderingContext2D;
@@ -23,23 +29,37 @@ describe('CircularRating Component', () => {
     jest.restoreAllMocks();
   });
 
-  describe('Rendering', () => {
-    it('should render with default props', () => {
-      const { container } = render(<CircularRating percent={7.5} />);
-      const canvas = container.querySelector('canvas');
+  it('should render with default props', () => {
+    const { container } = render(<CircularRating percent={7.5} />);
+    const canvas = container.querySelector('canvas');
 
-      expect(screen.getByText('75')).toBeInTheDocument();
-      expect(screen.getByText('%')).toBeInTheDocument();
-      expect(canvas).toHaveAttribute('width', '45');
-      expect(canvas).toHaveAttribute('height', '45');
-    });
+    expect(screen.getByText('75')).toBeInTheDocument();
+    expect(screen.getByText('%')).toBeInTheDocument();
+    expect(canvas).toHaveAttribute('width', '45');
+    expect(canvas).toHaveAttribute('height', '45');
   });
 
-  describe('Percent calculation', () => {
-    it('should display rounded percent value', () => {
-      render(<CircularRating percent={7.38} />);
-      expect(screen.getByText('74')).toBeInTheDocument();
-    });
+  it('should display rounded percent value', () => {
+    render(<CircularRating percent={7.38} />);
+    expect(screen.getByText('74')).toBeInTheDocument();
+  });
+
+  it('should resize when with < 480 ', () => {
+    resizeWindow(460);
+    const { container } = render(<CircularRating percent={7} size={100} />);
+    const canvas = container.querySelector('canvas');
+
+    expect(canvas).toHaveAttribute('width', '70');
+    expect(canvas).toHaveAttribute('height', '70');
+  });
+
+  it('should resize when with < 768 ', () => {
+    resizeWindow(760);
+    const { container } = render(<CircularRating percent={7} size={100} />);
+    const canvas = container.querySelector('canvas');
+
+    expect(canvas).toHaveAttribute('width', '85');
+    expect(canvas).toHaveAttribute('height', '85');
   });
 
   describe('Rating Color', () => {
