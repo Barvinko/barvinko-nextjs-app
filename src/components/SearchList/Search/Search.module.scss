@@ -1,8 +1,7 @@
 .searchSection {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   padding: 8% 10%;
-  gap: 1.5rem;
   position: relative;
   overflow: hidden;
 
@@ -14,6 +13,12 @@
   background-position: center;
   background-repeat: no-repeat;
   color: #fff;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
 
   &__title {
     position: relative;

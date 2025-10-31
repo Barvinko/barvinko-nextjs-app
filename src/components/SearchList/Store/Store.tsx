@@ -37,8 +37,8 @@ export const Store = () => {
   if (selectedCards.length === 0) return <></>;
 
   return (
-    <div className={styles.store}>
-      <div className={styles.store__container}>
+    <div className={`section-fluid ${styles.store}`}>
+      <div className={`section-fluid__content ${styles.store__container}`}>
         <p className={styles.store__count}>Selected: {selectedCards.length}</p>
         <div className={styles.store__actions}>
           <button

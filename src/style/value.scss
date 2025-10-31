@@ -44,6 +44,17 @@
   --error-color: #dc2626;
   --error-bg: #fee2e2;
   --success-color: #16a34a;
+
+  --store-bg: rgba(255, 255, 255, 0.85);
+  --store-border: rgba(226, 232, 240, 0.8);
+  --store-shadow: 0 -4px 24px rgba(0, 0, 0, 0.1);
+
+  --store-btn-unselect: #f1f5f9;
+  --store-btn-unselect-color: #475569;
+  --store-btn-unselect-border: #e2e8f0;
+  --store-btn-unselect-hover: #e2e8f0;
+  --store-btn-unselect-hover-border: #cbd5e1;
+  --store-btn-unselect-shadow: rgba(0, 0, 0, 0.1);
 }
 
 :root.dark {
@@ -72,4 +83,15 @@
   --error-color: #ef4444;
   --error-bg: #7f1d1d;
   --success-color: #22c55e;
+
+  --store-bg: rgba(30, 41, 59, 0.85);
+  --store-border: rgba(51, 65, 85, 0.8);
+  --store-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
+
+  --store-btn-unselect: #334155;
+  --store-btn-unselect-color: #cbd5e1;
+  --store-btn-unselect-border: #475569;
+  --store-btn-unselect-hover: #475569;
+  --store-btn-unselect-hover-border: #64748b;
+  --store-btn-unselect-shadow: rgba(0, 0, 0, 0.3);
 }

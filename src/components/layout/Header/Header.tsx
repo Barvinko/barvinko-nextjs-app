@@ -19,21 +19,23 @@ export const Header = () => {
 
   return (
     <header className={`section-fluid ${styles.header}`}>
-      <div className={styles['header__container-links']}>
-        <h1 onClick={handleLogoClick} className={styles.header__title}>
-          TMDB
-        </h1>
-        <h2 onClick={handleLogoClick} className={styles.header__link}>
-          TOP Movie
-        </h2>
+      <div className={`section-fluid__content ${styles.header__container}`}>
+        <div className={styles['header__container-links']}>
+          <h1 onClick={handleLogoClick} className={styles.header__title}>
+            TMDB
+          </h1>
+          <h2 onClick={handleLogoClick} className={styles.header__link}>
+            TOP Movie
+          </h2>
+        </div>
+        <button className={styles.header__button} onClick={toggleTheme}>
+          {theme === 'light' ? (
+            <FaSun data-testid="sun-icon" />
+          ) : (
+            <FaMoon data-testid="moon-icon" />
+          )}
+        </button>
       </div>
-      <button className={styles.header__button} onClick={toggleTheme}>
-        {theme === 'light' ? (
-          <FaSun data-testid="sun-icon" />
-        ) : (
-          <FaMoon data-testid="moon-icon" />
-        )}
-      </button>
     </header>
   );
 };

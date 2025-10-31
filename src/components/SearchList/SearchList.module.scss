@@ -152,9 +152,19 @@
   }
 }
 
+@media (max-width: 630px) {
+  .searchList_selected {
+    padding-bottom: 160px;
+  }
+}
+
 @media (max-width: 480px) {
   .content {
     padding: 1rem 0;
+  }
+
+  .searchList__selected {
+    padding-bottom: 134px;
   }
 
   .pagination {
