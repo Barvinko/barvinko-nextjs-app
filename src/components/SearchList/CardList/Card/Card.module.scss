@@ -4,11 +4,11 @@
   overflow: hidden;
   cursor: pointer;
   border-radius: 16px;
-  background: var(--card-bg);
   box-shadow: 0 4px 12px var(--card-shadow);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   animation: cardEntry 0.5s ease-out backwards;
   animation-delay: calc(var(--card-index, 0) * 0.05s);
+  color: var(--card-text-secondary);
 
   &::before {
     content: '';
@@ -34,11 +34,7 @@
     aspect-ratio: 2/3;
     object-fit: cover;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    background: linear-gradient(
-      135deg,
-      var(--card-img-skeleton-start) 0%,
-      var(--card-img-skeleton-end) 100%
-    );
+    background-color: var(--card-img-skeleton);
   }
 
   &__body {
@@ -63,7 +59,6 @@
 
     .card-text {
       font-size: 0.9rem;
-      color: var(--card-text-secondary);
       line-height: 1.5;
       display: -webkit-box;
       -webkit-box-orient: vertical;
@@ -110,7 +105,7 @@
     }
 
     &[type='checkbox'] {
-      border-radius: 0 16px 0 12px;
+      border-radius: 0 0 0 12px;
     }
   }
 }
@@ -174,7 +169,6 @@
 
       .card-text {
         font-size: 0.8rem;
-        // -webkit-line-clamp: 2;
       }
     }
   }

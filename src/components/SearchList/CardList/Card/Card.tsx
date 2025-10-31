@@ -5,6 +5,7 @@ import { RootState } from '@store/store';
 import { selectCard, unselectCard } from '@store/selectedCardsSlice';
 import { Movie } from 'tmdb-ts';
 import Form from 'react-bootstrap/Form';
+import { CiImageOff } from 'react-icons/ci';
 import { CircularRating } from '@components/UI/CircularRating/CircularRating';
 import CardBT from 'react-bootstrap/Card';
 import styles from './Card.module.scss';
@@ -36,13 +37,17 @@ export const Card = (movie: Movie) => {
 
   return (
     <CardBT className={styles.card} onClick={handleClick}>
-      <CardBT.Img
-        variant="top"
-        className={styles.card__img}
-        src={`https://image.tmdb.org/t/p/w220_and_h330_face${poster_path}`}
-        alt={title || 'Movie poster'}
-        loading="lazy"
-      />
+      {poster_path ? (
+        <CardBT.Img
+          variant="top"
+          className={styles.card__img}
+          src={`https://image.tmdb.org/t/p/w220_and_h330_face${poster_path}`}
+          alt={title || 'Movie poster'}
+          loading="lazy"
+        />
+      ) : (
+        <CiImageOff className={styles.card__img} />
+      )}
       <CardBT.Body className={styles.card__body}>
         <CircularRating percent={vote_average} />
         <CardBT.Title>{title}</CardBT.Title>
