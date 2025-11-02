@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useMemo } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import ReactPaginate from 'react-paginate';
 import { Search } from './Search/Search';
@@ -27,10 +27,13 @@ export const SearchList = () => {
 
   const currentPage = getPage();
 
-  const queryParams = {
-    query: searchName || undefined,
-    page: currentPage,
-  };
+  const queryParams = useMemo(
+    () => ({
+      query: searchName || undefined,
+      page: currentPage,
+    }),
+    [searchName, currentPage]
+  );
 
   const { data, error, isFetching } = useGetMoviesQuery(queryParams, {
     skip: !currentPage,

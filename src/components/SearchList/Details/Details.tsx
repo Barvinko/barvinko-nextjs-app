@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Modal from 'react-modal';
 import { Spinner } from '@components/UI/Spinner/Spinner';
@@ -26,9 +26,9 @@ export const Details = () => {
     }
   }, [id]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     router.back();
-  };
+  }, [router]);
 
   return (
     <div className={`${styles.content__right} ${styles.content__right_active}`}>

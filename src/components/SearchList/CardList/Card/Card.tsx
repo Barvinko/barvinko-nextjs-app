@@ -1,4 +1,5 @@
 'use client';
+import { memo, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
@@ -10,7 +11,7 @@ import { CircularRating } from '@components/UI/CircularRating/CircularRating';
 import CardBT from 'react-bootstrap/Card';
 import styles from './Card.module.scss';
 
-export const Card = (movie: Movie) => {
+export const Card = memo((movie: Movie) => {
   const router = useRouter();
   const params = useParams<{ page: string }>();
 
@@ -23,17 +24,17 @@ export const Card = (movie: Movie) => {
 
   const isSelected = selectedItems.some((card) => card.id === id);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     router.push(`/page/${params?.page}/details/${id}`, { scroll: false });
-  };
+  }, [router, params, id]);
 
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = useCallback(() => {
     if (isSelected) {
       dispatch(unselectCard(id));
     } else {
       dispatch(selectCard(movie));
     }
-  };
+  }, [isSelected, dispatch, id, movie]);
 
   return (
     <CardBT className={styles.card} onClick={handleClick}>
@@ -68,4 +69,6 @@ export const Card = (movie: Movie) => {
       />
     </CardBT>
   );
-};
+});
+
+Card.displayName = 'Card';
