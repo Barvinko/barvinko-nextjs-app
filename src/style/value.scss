@@ -16,6 +16,13 @@
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.4s ease;
+
+  --spinner-track: rgba(203, 213, 225, 0.3);
+  --spinner-primary: #304fcc;
+  --spinner-secondary: #00baff;
+  --spinner-glow: rgba(48, 79, 204, 0.1);
+  --spinner-shadow: rgba(48, 79, 204, 0.3);
+  --spinner-inner-glow: rgba(0, 186, 255, 0.2);
 }
 
 :root.light {
@@ -62,6 +69,13 @@
   --store-btn-unselect-hover: #e2e8f0;
   --store-btn-unselect-hover-border: #cbd5e1;
   --store-btn-unselect-shadow: rgba(0, 0, 0, 0.1);
+
+  --spinner-track: rgba(203, 213, 225, 0.3);
+  --spinner-primary: #304fcc;
+  --spinner-secondary: #00baff;
+  --spinner-glow: rgba(48, 79, 204, 0.1);
+  --spinner-shadow: rgba(48, 79, 204, 0.3);
+  --spinner-inner-glow: rgba(0, 186, 255, 0.2);
 }
 
 :root.dark {
@@ -106,4 +120,11 @@
   --store-btn-unselect-hover: #475569;
   --store-btn-unselect-hover-border: #64748b;
   --store-btn-unselect-shadow: rgba(0, 0, 0, 0.3);
+
+  --spinner-track: rgba(71, 85, 105, 0.3);
+  --spinner-primary: #00baff;
+  --spinner-secondary: #304fcc;
+  --spinner-glow: rgba(0, 186, 255, 0.15);
+  --spinner-shadow: rgba(0, 186, 255, 0.4);
+  --spinner-inner-glow: rgba(48, 79, 204, 0.3);
 }
