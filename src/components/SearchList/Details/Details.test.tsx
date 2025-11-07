@@ -43,10 +43,6 @@ describe('Details', () => {
     expect(
       await screen.findByText(mockPopularMoviesTitle[0])
     ).toBeInTheDocument();
-    expect(screen.getByText('Birth Year:')).toBeInTheDocument();
-    expect(screen.getByText('Gender:')).toBeInTheDocument();
-    expect(screen.getByText('Height:')).toBeInTheDocument();
-    expect(screen.getByText('Mass:')).toBeInTheDocument();
   });
 
   it('displays error message if character data is not available', async () => {
@@ -55,7 +51,7 @@ describe('Details', () => {
     renderWithStore(<Details />);
 
     expect(
-      await screen.findByText('No character details available.')
+      await screen.findByText('No details available.')
     ).toBeInTheDocument();
   });
 

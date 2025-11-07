@@ -90,31 +90,29 @@ export const SearchList = () => {
       ) : (
         currentPage && (
           <div className={styles.content}>
-            <div className={styles.content__left}>
-              <CardList dataCharacters={data?.results || []} />
-              <ReactPaginate
-                previousClassName={`${styles.pagination__item} ${styles.pagination__previous}`}
-                nextClassName={`${styles.pagination__item} ${styles.pagination__next}`}
-                previousLabel={'<'}
-                nextLabel={'>'}
-                breakLabel={'...'}
-                breakClassName={`${styles.pagination__item} pagination__break-me`}
-                pageCount={
-                  (currentPage < 8
-                    ? data.total_pages < 8
-                      ? data.total_pages
-                      : 8
-                    : currentPage + 1) || 0
-                }
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
-                onPageChange={handlePageChange}
-                containerClassName={styles.pagination}
-                pageClassName={`${styles.pagination__item} ${styles.pagination__page}`}
-                activeClassName={`${styles.pagination__item} ${styles.pagination__page_active}`}
-                forcePage={currentPage - 1}
-              />
-            </div>
+            <CardList dataCharacters={data?.results || []} />
+            <ReactPaginate
+              previousClassName={`${styles.pagination__item} ${styles.pagination__previous}`}
+              nextClassName={`${styles.pagination__item} ${styles.pagination__next}`}
+              previousLabel={'<'}
+              nextLabel={'>'}
+              breakLabel={'...'}
+              breakClassName={`${styles.pagination__item} pagination__break-me`}
+              pageCount={
+                (currentPage < 8
+                  ? data.total_pages < 8
+                    ? data.total_pages
+                    : 8
+                  : currentPage + 1) || 0
+              }
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageChange}
+              containerClassName={styles.pagination}
+              pageClassName={`${styles.pagination__item} ${styles.pagination__page}`}
+              activeClassName={`${styles.pagination__item} ${styles.pagination__page_active}`}
+              forcePage={currentPage - 1}
+            />
           </div>
         )
       )}

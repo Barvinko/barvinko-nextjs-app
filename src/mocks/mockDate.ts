@@ -1,4 +1,5 @@
-import { PopularMovies, MovieDetails } from 'tmdb-ts';
+import { PopularMovies } from 'tmdb-ts';
+import { MovieDetailsAdded } from '@/src/types/types';
 
 export const mockPopularMoviesTitle = [
   'Demon Slayer: Kimetsu no Yaiba Infinity Castle',
@@ -47,7 +48,7 @@ export const mockPopularMovies: PopularMovies = {
   total_results: 200,
 };
 
-export const mockMovieDetails: MovieDetails = {
+export const mockMovieDetails: MovieDetailsAdded = {
   adult: false,
   backdrop_path: '/1RgPyOhN4DRs225BGTlHJqCudII.jpg',
   belongs_to_collection: {
@@ -66,6 +67,7 @@ export const mockMovieDetails: MovieDetails = {
   homepage: 'https://www.demonslayer-movie.com',
   id: 1,
   imdb_id: 'tt32820897',
+  origin_country: 'JP',
   original_language: 'ja',
   original_title: '劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来',
   overview:

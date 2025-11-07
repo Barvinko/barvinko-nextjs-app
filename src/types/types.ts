@@ -1,15 +1,5 @@
-export type ResponseStarWars = {
-  count: number;
-  next: null;
-  previous: null;
-  results: Character[];
-};
+import { MovieDetails } from 'tmdb-ts';
 
-export interface Character {
-  name: string;
-  height: string;
-  mass: string;
-  birth_year: string;
-  gender: string;
-  url: string;
+export interface MovieDetailsAdded extends MovieDetails {
+  origin_country: string;
 }
