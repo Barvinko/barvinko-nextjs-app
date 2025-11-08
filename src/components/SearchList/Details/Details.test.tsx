@@ -55,10 +55,10 @@ describe('Details', () => {
     ).toBeInTheDocument();
   });
 
-  it('should call router.back() when close button is clicked', () => {
+  it('should call router.back() when close button is clicked', async () => {
     renderWithStore(<Details />);
 
-    const closeButton = screen.getByText('Close');
+    const closeButton = await screen.findByText('✕');
     fireEvent.click(closeButton);
 
     expect(mockBack).toHaveBeenCalledTimes(1);

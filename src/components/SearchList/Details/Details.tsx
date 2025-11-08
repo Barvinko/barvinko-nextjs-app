@@ -1,11 +1,12 @@
 'use client';
 
-import { memo, useContext, useEffect, useCallback } from 'react';
+import { memo, useContext, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Modal from 'react-modal';
 import { Spinner } from '@components/UI/Spinner/Spinner';
 import { CircularRating } from '@components/UI/CircularRating/CircularRating';
 import { CiImageOff } from 'react-icons/ci';
+import { FaPlay } from 'react-icons/fa';
 import { ThemeContext } from '@store/ThemeContext';
 import { useGetDetailsQuery } from '@store/query/api';
 import { formatRuntime } from '@utilities/formatRuntime';
@@ -14,99 +15,167 @@ import styles from './Details.module.scss';
 export const Details = memo(() => {
   const router = useRouter();
   const params = useParams<{ page: string; id: string }>();
-  const page = params?.page || '1';
   const id = Number(params?.id) || 1;
 
   const { theme } = useContext(ThemeContext);
 
-  const { data, error, isFetching } = useGetDetailsQuery({
-    id: id,
-  });
-
-  useEffect(() => {
-    if (id) {
-      console.log(page, id, data);
-    }
-  }, [id]);
+  const { data, error, isFetching } = useGetDetailsQuery({ id });
 
   const handleClose = useCallback(() => {
     router.back();
   }, [router]);
 
+  if (isFetching) {
+    return (
+      <Modal
+        overlayClassName={`${styles.details__overlay} ${theme}`}
+        className={styles.details__modal}
+        isOpen={true}
+        onRequestClose={handleClose}
+        ariaHideApp={false}
+      >
+        <Spinner />
+      </Modal>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <Modal
+        overlayClassName={`${styles.details__overlay} ${theme}`}
+        className={styles.details__modal}
+        isOpen={true}
+        onRequestClose={handleClose}
+        ariaHideApp={false}
+      >
+        <p className={styles.details__error}>No details available.</p>
+      </Modal>
+    );
+  }
+
+  const releaseYear = data.release_date.split('-')[0];
+  const genres = data.genres.map((genre) => genre.name).join(', ');
+
   return (
     <Modal
-      overlayClassName={`${styles.details} ${theme}`}
-      className={styles.details__content}
+      overlayClassName={`${styles.details__overlay} ${theme}`}
+      className={styles.details__modal}
       isOpen={true}
       onRequestClose={handleClose}
       ariaHideApp={false}
     >
-      <button className="button" onClick={handleClose}>
-        Close
+      <button
+        className={styles.details__close}
+        onClick={handleClose}
+        aria-label="Close modal"
+      >
+        ✕
       </button>
-      {isFetching ? (
-        <Spinner />
-      ) : error || !data ? (
-        <p>No details available.</p>
-      ) : (
-        <div className={styles.details__body}>
-          <div className={styles.details__img}>
+
+      <div
+        className={styles.details__backdrop}
+        style={{
+          backgroundImage: data.backdrop_path
+            ? `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`
+            : 'none',
+        }}
+      >
+        <div className={styles['details__backdrop-overlay']} />
+      </div>
+
+      <div className={styles.details__content}>
+        <div className={styles.details__poster}>
+          {data.poster_path ? (
             <img
-              src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${data.poster_path}`}
+              src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
+              alt={data.title}
               loading="lazy"
-              alt=""
             />
+          ) : (
+            <div className={styles['details__poster-placeholder']}>
+              <CiImageOff size={64} />
+            </div>
+          )}
+        </div>
+
+        <div className={styles.details__info}>
+          <div className={styles.details__header}>
+            <h1 className={styles.details__title}>
+              {data.title}
+              <span className={styles.details__year}>({releaseYear})</span>
+            </h1>
+
+            <div className={styles.details__meta}>
+              <span className={styles.details__certification}>
+                {data.adult ? '18+' : data.origin_country?.[0] || 'PG'}
+              </span>
+              <span>{data.release_date}</span>
+              <span>•</span>
+              <span>{genres}</span>
+              <span>•</span>
+              <span>{formatRuntime(data.runtime)}</span>
+            </div>
           </div>
-          <div className={styles.details__info}>
-            <div className={styles.details__header}>
-              <div className={styles.details__title}>
-                <h2>{data.title}</h2>
-                <span className={styles.details__release}>
-                  ({data.release_date.split('-')[0]})
-                </span>
-              </div>
-              <div className={styles.details__facts}>
-                <span>
-                  {data.release_date} ({data.origin_country})
-                </span>
-                <span>
-                  {data.genres
-                    .map((genre) => {
-                      return genre.name;
-                    })
-                    .join(', ')}
-                </span>
-                <span>{formatRuntime(data.runtime)}</span>
+
+          <div className={styles.details__actions}>
+            <div className={styles.details__rating}>
+              <CircularRating
+                className={styles['details__rating-circle']}
+                percent={data.vote_average}
+                size={55}
+                strokeWidth={3}
+              />
+              <div className={styles['details__rating-text']}>
+                <span className={styles['details__rating-label']}>User</span>
+                <span className={styles['details__rating-label']}>Score</span>
               </div>
             </div>
-            <CircularRating
-              className={styles.details__rating}
-              percent={data.vote_average}
-            />
-            <div>
-              <h3>{data.tagline}</h3>
-              <h3>Overview</h3>
-              <div>{data.overview}</div>
-              <ol className={styles.details__companies}>
+
+            <button className={styles['details__play-btn']}>
+              <FaPlay />
+              <span>Play Trailer</span>
+            </button>
+          </div>
+
+          {data.tagline && (
+            <p className={styles.details__tagline}>{data.tagline}</p>
+          )}
+
+          <div className={styles.details__overview}>
+            <h3>Overview</h3>
+            <p>{data.overview}</p>
+          </div>
+
+          {data.production_companies?.length > 0 && (
+            <div className={styles.details__crew}>
+              <h3>Production Companies</h3>
+              <div className={styles['details__crew-list']}>
                 {data.production_companies.map((company) => (
-                  <li key={company.id} className={styles.details__company}>
+                  <div
+                    key={company.id}
+                    className={styles['details__crew-item']}
+                  >
                     {company.logo_path ? (
                       <img
+                        src={`https://image.tmdb.org/t/p/w200${company.logo_path}`}
+                        alt={company.name}
                         className={styles['details__company-logo']}
-                        src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${company.logo_path}`}
-                        alt=""
                       />
                     ) : (
-                      <CiImageOff />
+                      <div className={styles['details__company-placeholder']}>
+                        <CiImageOff size={24} />
+                      </div>
                     )}
-                    {company.name}
-                  </li>
+                    <span className={styles['details__crew-name']}>
+                      {company.name}
+                    </span>
+                  </div>
                 ))}
-              </ol>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </Modal>
   );
 });
