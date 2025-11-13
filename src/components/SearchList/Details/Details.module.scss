@@ -361,12 +361,8 @@
       transform: scale(1.1);
     }
 
-    &__play_btn:hover {
+    &__play-btn:hover {
       color: var(--text-secondary);
-    }
-
-    &__action_btn:hover {
-      background-color: rgba(30, 41, 59, 1);
     }
   }
 }
