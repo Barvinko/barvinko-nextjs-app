@@ -26,6 +26,10 @@ a {
   transition: all 0.5s;
 }
 
+.modal-open {
+  overflow: hidden !important;
+}
+
 .errorBoundary {
   text-align: center;
   margin: auto;

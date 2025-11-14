@@ -41,6 +41,7 @@ export const Details = memo(() => {
   }, [id, fetchVideos]);
 
   const handleClose = useCallback(() => {
+    document.body.classList.remove('modal-open');
     router.back();
   }, [router]);
 
@@ -54,6 +55,7 @@ export const Details = memo(() => {
       isOpen={true}
       onRequestClose={handleClose}
       ariaHideApp={false}
+      bodyOpenClassName="modal-open"
     >
       <button
         className={styles.details__close}
