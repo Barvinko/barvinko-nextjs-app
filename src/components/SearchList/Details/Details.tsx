@@ -1,14 +1,14 @@
 'use client';
 
-import { memo, useContext, useCallback, useState, useEffect } from 'react';
+import { memo, useContext, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Modal from 'react-modal';
 import { Spinner } from '@components/UI/Spinner/Spinner';
 import { CircularRating } from '@components/UI/CircularRating/CircularRating';
 import { CiImageOff } from 'react-icons/ci';
-import { FaPlay } from 'react-icons/fa';
+import { FaPlay, FaPause } from 'react-icons/fa';
 import { ThemeContext } from '@store/ThemeContext';
-import { useGetDetailsQuery, useGetVideosQuery } from '@store/query/api';
+import { useGetDetailsQuery, useLazyGetVideosQuery } from '@store/query/api';
 import { formatRuntime } from '@utilities/formatRuntime';
 import styles from './Details.module.scss';
 
@@ -20,29 +20,25 @@ export const Details = memo(() => {
   const { theme } = useContext(ThemeContext);
 
   const { data, error, isFetching } = useGetDetailsQuery({ id });
-  const [shouldFetchVideo, setShouldFetchVideo] = useState(false);
 
-  const { data: videosData } = useGetVideosQuery(
-    { id },
-    { skip: !shouldFetchVideo }
-  );
+  const [fetchVideos, { data: videosData, isFetching: isLoadingVideo }] =
+    useLazyGetVideosQuery();
 
-  const handlePlayTrailer = useCallback(() => {
-    setShouldFetchVideo(true);
-  }, []);
+  const handlePlayTrailer = useCallback(async () => {
+    try {
+      const result = await fetchVideos({ id }).unwrap();
 
-  useEffect(() => {
-    if (videosData && shouldFetchVideo) {
-      const trailer = videosData.results.find(
+      const trailer = result.results.find(
         (video) => video.site === 'YouTube' && video.type === 'Trailer'
       );
 
       if (trailer) {
         window.open(`https://www.youtube.com/watch?v=${trailer.key}`, '_blank');
-        setShouldFetchVideo(false);
       }
+    } catch (error) {
+      console.error('Failed to fetch trailer:', error);
     }
-  }, [videosData, shouldFetchVideo]);
+  }, [id, fetchVideos]);
 
   const handleClose = useCallback(() => {
     router.back();
@@ -138,9 +134,30 @@ export const Details = memo(() => {
                 <button
                   className={styles['details__play-btn']}
                   onClick={handlePlayTrailer}
+                  disabled={
+                    videosData !== undefined && videosData.results.length === 0
+                  }
                 >
-                  <FaPlay />
-                  <span>Play Trailer</span>
+                  {
+                    <>
+                      {isLoadingVideo ? (
+                        <>
+                          <FaPause />
+                          <span>Loading...</span>
+                        </>
+                      ) : videosData?.results.length === 0 ? (
+                        <>
+                          <FaPause />
+                          <span>No Trailer Available</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaPlay />
+                          <span>Play Trailer</span>
+                        </>
+                      )}
+                    </>
+                  }
                 </button>
               </div>
 
