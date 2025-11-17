@@ -38,9 +38,9 @@
   --scrollbar-color: #ccc;
   --input-bg-color: #fff;
   --input-border-color: #e2e8f0;
+
   --details-bg-color: var(--bg-secondary);
-  --modal-bg: #ffffff;
-  --modal-color: #333;
+  --details-backdrop-overlay: rgba(255, 255, 255, 0.7);
 
   --card-hover-shadow: 0 12px 48px rgba(48, 79, 204, 0.15);
   --card-body-bg: #ffffff;
@@ -91,9 +91,9 @@
   --scrollbar-color: #555;
   --input-bg-color: #1e293b;
   --input-border-color: #334155;
+
   --details-bg-color: #1e293b;
-  --modal-bg: #1e293b;
-  --modal-color: white;
+  --details-backdrop-overlay: rgba(0, 0, 0, 0.7);
 
   --card-body-bg: #2e293f;
   --card-shadow: rgba(0, 0, 0, 0.3);
