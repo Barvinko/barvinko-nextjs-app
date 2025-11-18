@@ -1,6 +1,6 @@
-export const formatRuntime = (totalMinutes: number) => {
+export const formatRuntime = (totalMinutes: number | undefined) => {
   if (typeof totalMinutes !== 'number' || totalMinutes <= 0) {
-    return '';
+    return undefined;
   }
 
   const hours = Math.floor(totalMinutes / 60);

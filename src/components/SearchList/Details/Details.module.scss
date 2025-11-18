@@ -196,6 +196,7 @@
 
     &:disabled {
       color: var(--text-secondary);
+      cursor: initial;
     }
 
     svg {

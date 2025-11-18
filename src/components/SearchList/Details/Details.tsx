@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useContext, useCallback } from 'react';
+import React, { memo, useContext, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Modal from 'react-modal';
 import { Spinner } from '@components/UI/Spinner/Spinner';
@@ -47,6 +47,11 @@ export const Details = memo(() => {
 
   const releaseYear = data?.release_date.split('-')[0];
   const genres = data?.genres.map((genre) => genre.name).join(', ');
+  const metaArr = [
+    data?.release_date,
+    genres,
+    formatRuntime(data?.runtime),
+  ].filter(Boolean);
 
   return (
     <Modal
@@ -70,16 +75,18 @@ export const Details = memo(() => {
         <p className={styles.details__error}>No details available.</p>
       ) : (
         <>
-          <div
-            className={styles.details__backdrop}
-            style={{
-              backgroundImage: data.backdrop_path
-                ? `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`
-                : 'none',
-            }}
-          >
-            <div className={styles['details__backdrop-overlay']} />
-          </div>
+          {data.backdrop_path && (
+            <div
+              className={styles.details__backdrop}
+              style={{
+                backgroundImage: data.backdrop_path
+                  ? `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`
+                  : 'none',
+              }}
+            >
+              <div className={styles['details__backdrop-overlay']} />
+            </div>
+          )}
 
           <div className={styles.details__content}>
             <div className={styles.details__poster}>
@@ -100,18 +107,23 @@ export const Details = memo(() => {
               <div className={styles.details__header}>
                 <h1 className={styles.details__title}>
                   {data.title}
-                  <span className={styles.details__year}>({releaseYear})</span>
+                  {releaseYear && (
+                    <span className={styles.details__year}>
+                      ({releaseYear})
+                    </span>
+                  )}
                 </h1>
 
                 <div className={styles.details__meta}>
                   <span className={styles.details__certification}>
-                    {data.adult ? '18+' : data.origin_country?.[0] || 'PG'}
+                    {data.origin_country?.[0] || '-'}
                   </span>
-                  <span>{data.release_date}</span>
-                  <span>•</span>
-                  <span>{genres}</span>
-                  <span>•</span>
-                  <span>{formatRuntime(data.runtime)}</span>
+                  {metaArr.map((item, index) => (
+                    <React.Fragment key={index}>
+                      <span>{item}</span>
+                      {index < metaArr.length - 1 && <span>•</span>}
+                    </React.Fragment>
+                  ))}
                 </div>
               </div>
 
@@ -169,7 +181,7 @@ export const Details = memo(() => {
 
               <div className={styles.details__overview}>
                 <h3>Overview</h3>
-                <p>{data.overview}</p>
+                <p>{data.overview || 'Overview not found'}</p>
               </div>
 
               {data.production_companies?.length > 0 && (
