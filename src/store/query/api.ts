@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { PopularMovies } from 'tmdb-ts';
 import { MovieDetailsAdded, MovieVideosResponse } from '@/src/types/types';
+import { API_URLS } from '@/constants/URLs';
 
 const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
@@ -13,7 +14,7 @@ if (!apiKey) {
 export const tmdbApi = createApi({
   reducerPath: 'tmdbApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.themoviedb.org/3',
+    baseUrl: API_URLS.BASE,
     prepareHeaders: (headers) => {
       headers.set('Authorization', `Bearer ${apiKey}`);
       headers.set('accept', 'application/json');

@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import { CiImageOff } from 'react-icons/ci';
 import { CircularRating } from '@components/UI/CircularRating/CircularRating';
 import CardBT from 'react-bootstrap/Card';
+import { IMAGE_URLS } from '@/constants/URLs';
 import styles from './Card.module.scss';
 
 export const Card = memo((movie: Movie) => {
@@ -42,7 +43,7 @@ export const Card = memo((movie: Movie) => {
         <CardBT.Img
           variant="top"
           className={styles.card__img}
-          src={`https://image.tmdb.org/t/p/w220_and_h330_face${poster_path}`}
+          src={`${IMAGE_URLS.W500}${poster_path}`}
           alt={title || 'Movie poster'}
           loading="lazy"
         />

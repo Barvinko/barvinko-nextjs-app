@@ -1,11 +1,9 @@
 import { http, HttpResponse } from 'msw';
+import { API_URLS } from '../constants/URLs';
 import { mockPopularMovies, mockMovieDetails } from './mockDate';
 
-export const BASE_URL = 'https://api.themoviedb.org/3';
-export const MOVIE_POPULAR_URL = '/movie/popular';
-
 export const handlers = [
-  http.get(`${BASE_URL}${MOVIE_POPULAR_URL}`, ({ request }) => {
+  http.get(API_URLS.MOVIE_POPULAR, ({ request }) => {
     const url = new URL(request.url);
     const page = url.searchParams.get('page') ?? '1';
 
@@ -15,7 +13,7 @@ export const handlers = [
     });
   }),
 
-  http.get(`${BASE_URL}/search/movie`, ({ request }) => {
+  http.get(API_URLS.MOVIE_SEARCH, ({ request }) => {
     const url = new URL(request.url);
     const query = url.searchParams.get('query') ?? '';
 
@@ -29,7 +27,7 @@ export const handlers = [
     });
   }),
 
-  http.get(`${BASE_URL}/movie/:id`, ({ params }) => {
+  http.get(API_URLS.MOVIE_ID, ({ params }) => {
     const { id } = params;
     if (Number(id) === mockMovieDetails.id) {
       return HttpResponse.json(mockMovieDetails);

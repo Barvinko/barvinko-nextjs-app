@@ -8,6 +8,7 @@ import { CircularRating } from '@components/UI/CircularRating/CircularRating';
 import { CiImageOff } from 'react-icons/ci';
 import { FaPlay, FaPause } from 'react-icons/fa';
 import { ThemeContext } from '@store/ThemeContext';
+import { IMAGE_URLS } from '@/constants/URLs';
 import { useGetDetailsQuery, useLazyGetVideosQuery } from '@store/query/api';
 import { formatRuntime } from '@utilities/formatRuntime';
 import styles from './Details.module.scss';
@@ -80,7 +81,7 @@ export const Details = memo(() => {
               className={styles.details__backdrop}
               style={{
                 backgroundImage: data.backdrop_path
-                  ? `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`
+                  ? `url(${IMAGE_URLS.ORIGINAL}${data.backdrop_path})`
                   : 'none',
               }}
             >
@@ -92,7 +93,7 @@ export const Details = memo(() => {
             <div className={styles.details__poster}>
               {data.poster_path ? (
                 <img
-                  src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
+                  src={`${IMAGE_URLS.W500}${data.poster_path}`}
                   alt={data.title}
                   loading="lazy"
                 />
@@ -195,7 +196,7 @@ export const Details = memo(() => {
                       >
                         {company.logo_path ? (
                           <img
-                            src={`https://image.tmdb.org/t/p/w200${company.logo_path}`}
+                            src={`${IMAGE_URLS.W200}${company.logo_path}`}
                             alt={company.name}
                             className={styles['details__company-logo']}
                           />

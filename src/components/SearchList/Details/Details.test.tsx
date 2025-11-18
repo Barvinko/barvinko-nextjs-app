@@ -5,6 +5,7 @@ import { renderWithStore } from '@utilities/renderWithStore';
 import { waitForWrap } from '@utilities/test-utility';
 import { mockErrorResponse } from '@utilities/test-utility';
 import { mockPopularMoviesTitle } from '@/mocks/mockDate';
+import { API_URLS } from '@/constants/URLs';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
@@ -46,7 +47,7 @@ describe('Details', () => {
   });
 
   it('displays error message if character data is not available', async () => {
-    mockErrorResponse('/movie/:id');
+    mockErrorResponse(API_URLS.MOVIE_ID);
 
     renderWithStore(<Details />);
 

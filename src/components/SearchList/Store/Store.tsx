@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { unselectCard } from '@store/selectedCardsSlice';
 import { IoMdDownload, IoMdClose } from 'react-icons/io';
+import { IMAGE_URLS } from '@/constants/URLs';
 import styles from './Store.module.scss';
 
 export const Store = () => {
@@ -25,7 +26,7 @@ export const Store = () => {
           `${indent}Vote Average: ${movie.vote_average}`,
           `${indent}Release Date: ${movie.release_date}`,
           `${indent}"${movie.overview}"`,
-          `${indent}Poster: https://image.tmdb.org/t/p/w220_and_h330_face${movie.poster_path}`,
+          `${indent}Poster: ${IMAGE_URLS.W500}${movie.poster_path}`,
         ].join('\n')
       ),
     ].join('\n\n');
