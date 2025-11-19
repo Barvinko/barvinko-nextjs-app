@@ -1,10 +1,10 @@
-import { screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { Details } from './Details';
 import { useRouter, useParams } from 'next/navigation';
 import { renderWithStore } from '@utilities/renderWithStore';
 import { waitForWrap } from '@utilities/test-utility';
 import { mockErrorResponse } from '@utilities/test-utility';
-import { mockPopularMoviesTitle } from '@/mocks/mockDate';
+import { mockPopularMoviesTitle, mockMovieVideos } from '@/mocks/mockDate';
 import { API_URLS } from '@/constants/URLs';
 
 jest.mock('next/navigation', () => ({
@@ -63,5 +63,54 @@ describe('Details', () => {
     fireEvent.click(closeButton);
 
     expect(mockBack).toHaveBeenCalledTimes(1);
+  });
+
+  describe('Details', () => {
+    let windowOpenSpy: jest.SpyInstance;
+    let consoleErrorSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      windowOpenSpy = jest.spyOn(window, 'open').mockImplementation(() => null);
+      consoleErrorSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      windowOpenSpy.mockRestore();
+      consoleErrorSpy.mockRestore();
+    });
+
+    it('must send to link of trailer if fetching trailer true', async () => {
+      renderWithStore(<Details />);
+
+      await waitForWrap();
+
+      const playButton = await screen.findByText('Play Trailer');
+
+      fireEvent.click(playButton);
+
+      await waitFor(() => {
+        expect(windowOpenSpy).toHaveBeenCalledWith(
+          `https://www.youtube.com/watch?v=${mockMovieVideos.results[1].key}`,
+          '_blank'
+        );
+      });
+    });
+
+    it('should log an error if fetching trailer fails', async () => {
+      mockErrorResponse(API_URLS.MOVIE_VIDEOS);
+      renderWithStore(<Details />);
+
+      await waitForWrap();
+
+      const playButton = await screen.findByText('Play Trailer');
+
+      fireEvent.click(playButton);
+
+      await waitFor(() => {
+        expect(consoleErrorSpy).toHaveBeenCalled();
+      });
+    });
   });
 });

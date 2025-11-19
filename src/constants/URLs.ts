@@ -5,6 +5,7 @@ export const API_URLS = {
   MOVIE_POPULAR: `${tmdbBaseUrl}/movie/popular`,
   MOVIE_SEARCH: `${tmdbBaseUrl}/search/movie`,
   MOVIE_ID: `${tmdbBaseUrl}/movie/:id`,
+  MOVIE_VIDEOS: `${tmdbBaseUrl}/movie/:id/videos`,
 };
 
 export enum IMAGE_URLS {

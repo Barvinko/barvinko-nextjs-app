@@ -1,5 +1,5 @@
 import { PopularMovies } from 'tmdb-ts';
-import { MovieDetailsAdded } from '@/src/types/types';
+import { MovieDetailsAdded, MovieVideosResponse } from '@/src/types/types';
 
 export const mockPopularMoviesTitle = [
   'Demon Slayer: Kimetsu no Yaiba Infinity Castle',
@@ -104,4 +104,26 @@ export const mockMovieDetails: MovieDetailsAdded = {
   video: false,
   vote_average: 7.65,
   vote_count: 204,
+};
+
+export const mockMovieVideos: MovieVideosResponse = {
+  id: 1,
+  results: [
+    {
+      id: '68c36bf0682941f0c924890f',
+      key: 'DitPK3bfFOI',
+      name: 'English Dub - Behind the Scenes',
+      site: 'YouTube',
+      type: 'Behind the Scenes',
+      official: true,
+    },
+    {
+      id: '691838e7579b325ab63a4fe9',
+      key: 'pp2vyPNBOI4',
+      name: 'Shinobu Kocho [Subtitled]',
+      site: 'YouTube',
+      type: 'Trailer',
+      official: true,
+    },
+  ],
 };
