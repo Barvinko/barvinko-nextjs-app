@@ -2,9 +2,16 @@ import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { Details } from './Details';
 import { useRouter, useParams } from 'next/navigation';
 import { renderWithStore } from '@utilities/renderWithStore';
-import { waitForWrap } from '@utilities/test-utility';
-import { mockErrorResponse } from '@utilities/test-utility';
-import { mockPopularMoviesTitle, mockMovieVideos } from '@/mocks/mockDate';
+import {
+  waitForWrap,
+  mockErrorResponse,
+  mockCustomResponse,
+} from '@utilities/test-utility';
+import {
+  mockPopularMoviesTitle,
+  mockMovieVideos,
+  mockMovieDetails,
+} from '@/mocks/mockDate';
 import { API_URLS } from '@/constants/URLs';
 
 jest.mock('next/navigation', () => ({
@@ -65,7 +72,21 @@ describe('Details', () => {
     expect(mockBack).toHaveBeenCalledTimes(1);
   });
 
-  describe('Details', () => {
+  it('should display "-" when origin_country is empty or missing', async () => {
+    mockCustomResponse(API_URLS.MOVIE_ID, {
+      ...mockMovieDetails,
+      origin_country: [],
+      overview: '',
+    });
+    renderWithStore(<Details />);
+
+    await waitForWrap();
+
+    expect(screen.getByText('-')).toBeInTheDocument();
+    expect(screen.getByText('Overview not found')).toBeInTheDocument();
+  });
+
+  describe('handlePlayTrailer', () => {
     let windowOpenSpy: jest.SpyInstance;
     let consoleErrorSpy: jest.SpyInstance;
 
@@ -98,7 +119,7 @@ describe('Details', () => {
       });
     });
 
-    it('should log an error if fetching trailer fails', async () => {
+    it('must log an error if fetching trailer fails', async () => {
       mockErrorResponse(API_URLS.MOVIE_VIDEOS);
       renderWithStore(<Details />);
 
@@ -110,6 +131,20 @@ describe('Details', () => {
 
       await waitFor(() => {
         expect(consoleErrorSpy).toHaveBeenCalled();
+      });
+    });
+
+    it('must display "No Trailer Available" when no videos exist', async () => {
+      mockCustomResponse(API_URLS.MOVIE_VIDEOS, { id: 1, results: [] });
+      renderWithStore(<Details />);
+
+      await waitForWrap();
+
+      const playButton = await screen.findByText('Play Trailer');
+      fireEvent.click(playButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('No Trailer Available')).toBeInTheDocument();
       });
     });
   });

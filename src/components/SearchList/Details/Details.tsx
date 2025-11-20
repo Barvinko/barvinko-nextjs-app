@@ -80,9 +80,7 @@ export const Details = memo(() => {
             <div
               className={styles.details__backdrop}
               style={{
-                backgroundImage: data.backdrop_path
-                  ? `url(${IMAGE_URLS.ORIGINAL}${data.backdrop_path})`
-                  : 'none',
+                backgroundImage: `url(${IMAGE_URLS.ORIGINAL}${data.backdrop_path})`,
               }}
             >
               <div className={styles['details__backdrop-overlay']} />

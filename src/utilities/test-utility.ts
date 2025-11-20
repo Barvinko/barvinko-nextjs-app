@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { tmdbApi } from '@store/query/api';
 import { server } from '@/mocks/server';
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, DefaultBodyType } from 'msw';
 import { screen, waitFor } from '@testing-library/react';
 import localStorageReducer from '@store/localStorageSlice';
 import selectedCardsReducer from '@store/selectedCardsSlice';
@@ -55,6 +55,13 @@ export const mockErrorResponse = (url: string) =>
         { status_message: 'Internal Server Error' },
         { status: 500 }
       );
+    })
+  );
+
+export const mockCustomResponse = (url: string, response: DefaultBodyType) =>
+  server.use(
+    http.get(url, () => {
+      return HttpResponse.json(response);
     })
   );
 
