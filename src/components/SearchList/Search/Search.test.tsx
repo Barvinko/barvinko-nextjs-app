@@ -1,10 +1,12 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { Search } from './Search';
+import { createTestStore } from '@utilities/test-utility';
 import { renderWithStore } from '@utilities/renderWithStore';
 
 describe('Search', () => {
+  const mockNameRequest = jest.fn();
+
   it('renders Search component and handles input', () => {
-    const mockNameRequest = jest.fn();
     renderWithStore(<Search nameRequest={mockNameRequest} />);
 
     const input = screen.getByPlaceholderText('Search movie...');
@@ -17,4 +19,23 @@ describe('Search', () => {
       expect(mockNameRequest).toHaveBeenCalledWith('Slayer');
     });
   });
+
+  it.each([
+    ['The Matrix', 'The Matrix'],
+    [undefined, ''],
+  ])(
+    'initializes input correctly when localName is %s',
+    (localNameValue, expectedValue) => {
+      const store = createTestStore({
+        localStorage: {
+          searchName: localNameValue,
+        },
+      });
+
+      renderWithStore(<Search nameRequest={mockNameRequest} />, store);
+
+      const input = screen.getByPlaceholderText('Search movie...');
+      expect(input).toHaveValue(expectedValue);
+    }
+  );
 });
