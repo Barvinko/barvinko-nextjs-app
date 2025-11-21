@@ -26,103 +26,123 @@ describe('SearchList', () => {
     (useParams as jest.Mock).mockReturnValue({ page: '1' });
   });
 
-  it('renders spinner when loading', () => {
-    renderWithStore(<SearchList />);
-    expect(screen.getByTestId('spinner')).toBeInTheDocument();
-  });
-
-  it('renders error message when error or no results', async () => {
-    mockEmptyResponse();
-    renderWithStore(<SearchList />);
-    await waitForWrap();
-
-    expect(screen.getByText('Nothing Found')).toBeInTheDocument();
-  });
-
-  it('renders CardList and pagination when data is present', async () => {
-    renderWithStore(<SearchList />);
-    await waitForWrap();
-
-    expect(
-      screen.getAllByText(new RegExp(mockPopularMoviesTitle[0], 'i'))[0]
-    ).toBeInTheDocument();
-    expect(
-      screen.getAllByText(new RegExp(mockPopularMoviesTitle[1], 'i'))[0]
-    ).toBeInTheDocument();
-
-    expect(screen.getByRole('navigation')).toBeInTheDocument();
-  });
-
-  it('calls router.push on page change', async () => {
-    renderWithStore(<SearchList />);
-    await waitForWrap();
-    fireEvent.click(screen.getByText('>'));
-    expect(mockPush).toHaveBeenCalled();
-  });
-
-  it('dispatches setSearchName and router.push on search', async () => {
-    const testStore = createTestStore();
-    renderWithStore(<SearchList />, testStore);
-
-    await waitForWrap();
-
-    const searchInput = screen.getByPlaceholderText('Search movie...');
-    fireEvent.change(searchInput, { target: { value: 'Lord' } });
-
-    fireEvent.submit(screen.getByText('Search'));
-
-    await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith('/page/1');
-
-      const state = testStore.getState();
-      expect(state.localStorage.searchName).toBe('Lord');
-    });
-  });
-
-  it('applies selected class when selectedCards is not empty', async () => {
-    global.URL.createObjectURL = jest.fn(() => 'mocked-url');
-
-    const testStore = createTestStore({
-      localStorage: { searchName: '' },
-      selectedCards: {
-        selectedCards: mockPopularMovies.results,
-      },
+  describe('Rendering States and API Responses', () => {
+    it('renders spinner when loading', () => {
+      renderWithStore(<SearchList />);
+      expect(screen.getByTestId('spinner')).toBeInTheDocument();
     });
 
-    const { container } = renderWithStore(<SearchList />, testStore);
+    it('renders error message when API returns error', async () => {
+      mockErrorResponse(API_URLS.MOVIE_POPULAR);
+      renderWithStore(<SearchList />);
 
-    await waitForWrap();
+      await waitForWrap();
 
-    expect(
-      container.querySelector('[class*="searchList_selected"]')
-    ).toBeInTheDocument();
-  });
+      expect(screen.getByText('Nothing Found')).toBeInTheDocument();
+    });
 
-  it('renders error message when API returns error', async () => {
-    mockErrorResponse(API_URLS.MOVIE_POPULAR);
-    renderWithStore(<SearchList />);
+    it('renders error message when error or no results', async () => {
+      mockEmptyResponse();
+      renderWithStore(<SearchList />);
+      await waitForWrap();
 
-    await waitForWrap();
+      expect(screen.getByText('Nothing Found')).toBeInTheDocument();
+    });
 
-    expect(screen.getByText('Nothing Found')).toBeInTheDocument();
-  });
+    it('renders CardList and pagination when data is present', async () => {
+      renderWithStore(<SearchList />);
+      await waitForWrap();
 
-  it('searches movies when search query is provided', async () => {
-    const testStore = createTestStore();
-    renderWithStore(<SearchList />, testStore);
-
-    await waitForWrap();
-
-    const searchInput = screen.getByPlaceholderText('Search movie...');
-    fireEvent.change(searchInput, { target: { value: 'Slayer' } });
-
-    fireEvent.click(screen.getByText('Search'));
-
-    await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith('/page/1');
       expect(
-        screen.getAllByText(new RegExp('Demon Slayer', 'i'))[0]
+        screen.getAllByText(new RegExp(mockPopularMoviesTitle[0], 'i'))[0]
+      ).toBeInTheDocument();
+      expect(
+        screen.getAllByText(new RegExp(mockPopularMoviesTitle[1], 'i'))[0]
+      ).toBeInTheDocument();
+
+      expect(screen.getByRole('navigation')).toBeInTheDocument();
+    });
+
+    it('applies selected class when selectedCards is not empty', async () => {
+      global.URL.createObjectURL = jest.fn(() => 'mocked-url');
+      const testStore = createTestStore({
+        localStorage: { searchName: '' },
+        selectedCards: {
+          selectedCards: mockPopularMovies.results,
+        },
+      });
+
+      const { container } = renderWithStore(<SearchList />, testStore);
+      await waitForWrap();
+
+      expect(
+        container.querySelector('[class*="searchList_selected"]')
       ).toBeInTheDocument();
     });
+  });
+
+  describe('User Interactions', () => {
+    it('calls router.push on page change', async () => {
+      renderWithStore(<SearchList />);
+      await waitForWrap();
+      fireEvent.click(screen.getByText('>'));
+      expect(mockPush).toHaveBeenCalled();
+    });
+
+    it('dispatches setSearchName and router.push on search', async () => {
+      const testStore = createTestStore();
+      renderWithStore(<SearchList />, testStore);
+
+      await waitForWrap();
+
+      const searchInput = screen.getByPlaceholderText('Search movie...');
+      fireEvent.change(searchInput, { target: { value: 'Lord' } });
+      fireEvent.submit(screen.getByText('Search'));
+
+      await waitFor(() => {
+        expect(mockPush).toHaveBeenCalledWith('/page/1');
+
+        const state = testStore.getState();
+        expect(state.localStorage.searchName).toBe('Lord');
+      });
+    });
+
+    it('searches movies when search query is provided', async () => {
+      const testStore = createTestStore();
+      renderWithStore(<SearchList />, testStore);
+
+      await waitForWrap();
+
+      const searchInput = screen.getByPlaceholderText('Search movie...');
+      fireEvent.change(searchInput, { target: { value: 'Slayer' } });
+
+      fireEvent.click(screen.getByText('Search'));
+
+      await waitFor(() => {
+        expect(mockPush).toHaveBeenCalledWith('/page/1');
+        expect(
+          screen.getAllByText(new RegExp('Demon Slayer', 'i'))[0]
+        ).toBeInTheDocument();
+      });
+    });
+  });
+
+  test.each([
+    ['Positive integer', '1', 1],
+    ['0', '0', undefined],
+    ['non-integer', 'a', undefined],
+  ])('if the page is %s', async (_, pageParam, expectedPage) => {
+    (useParams as jest.Mock).mockReturnValue({ page: pageParam });
+
+    renderWithStore(<SearchList />);
+
+    await waitForWrap();
+
+    if (expectedPage === undefined) {
+      expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
+      expect(screen.getByText('Nothing Found')).toBeInTheDocument();
+    } else {
+      expect(screen.getByRole('navigation')).toBeInTheDocument();
+    }
   });
 });
