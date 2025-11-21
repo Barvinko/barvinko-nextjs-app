@@ -10,7 +10,7 @@ jest.mock('next/navigation', () => ({
   useParams: jest.fn(),
 }));
 
-describe('SearchList', () => {
+describe('Card', () => {
   const mockPush = jest.fn();
 
   beforeEach(() => {
@@ -66,13 +66,37 @@ describe('SearchList', () => {
     expect(store.getState().selectedCards.selectedCards).toHaveLength(0);
   });
 
-  it('Card render without overview', () => {
-    const movieWithoutOverview = {
-      ...mockPopularMovies.results[0],
-      overview: '',
-    };
-    renderWithStore(<Card {...movieWithoutOverview} />);
+  it.each([
+    ['None', '', 'No description available.'],
+    ['Long', 'a'.repeat(121), 'a'.repeat(120) + '...'],
+    ['Short', 'Short overview.', 'Short overview.'],
+  ])(
+    'processing text of Card correctly when overview is %s',
+    (_, overview, expectedText) => {
+      const movieWithoutOverview = {
+        ...mockPopularMovies.results[0],
+        overview,
+      };
+      renderWithStore(<Card {...movieWithoutOverview} />);
 
-    expect(screen.getByText('No description available.')).toBeInTheDocument();
+      expect(screen.getByText(expectedText)).toBeInTheDocument();
+    }
+  );
+
+  it.each([
+    ['Title', mockPopularMovies.results[0], mockPopularMovies.results[0].title],
+    [
+      'None',
+      {
+        ...mockPopularMovies.results[0],
+        title: '',
+      },
+      'Movie poster',
+    ],
+  ])('alt attribute of image is %s', (_, movieData, expectedAlt) => {
+    renderWithStore(<Card {...movieData} />);
+
+    const image = screen.getByRole('img') as HTMLImageElement;
+    expect(image.alt).toBe(expectedAlt);
   });
 });
