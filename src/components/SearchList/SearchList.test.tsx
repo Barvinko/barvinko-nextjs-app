@@ -9,6 +9,7 @@ import {
   waitForWrap,
 } from '@utilities/test-utility';
 import { renderWithStore } from '@utilities/renderWithStore';
+import { mockCustomResponse } from '@utilities/test-utility';
 import { mockPopularMovies, mockPopularMoviesTitle } from '@/mocks/mockDate';
 import { API_URLS } from '@/constants/URLs';
 
@@ -127,22 +128,53 @@ describe('SearchList', () => {
     });
   });
 
-  test.each([
-    ['Positive integer', '1', 1],
-    ['0', '0', undefined],
-    ['non-integer', 'a', undefined],
-  ])('if the page is %s', async (_, pageParam, expectedPage) => {
-    (useParams as jest.Mock).mockReturnValue({ page: pageParam });
+  describe('Data Rendering and Pagination Logic', () => {
+    jest.mock('./CardList/CardList', () => ({
+      CardList: jest.fn(() => <div data-testid="CardList" />),
+    }));
 
-    renderWithStore(<SearchList />);
+    test.each([
+      ['when total_pages < 8 and currentPage < 8', 5, 1, '5'],
+      ['when total_pages >= 8 and currentPage < 8', 10, 1, '8'],
+      ['when currentPage >= 8 (e.g., page 10)', 20, 10, '11'],
+    ])(
+      'calculates pagination props correctly: %s (Total: %s, Current: %s)',
+      async (_, totalPages, currentPage, showLastPage) => {
+        (useParams as jest.Mock).mockReturnValue({ page: currentPage });
+        mockCustomResponse(API_URLS.MOVIE_POPULAR, {
+          ...mockPopularMovies,
+          total_pages: totalPages,
+          page: currentPage,
+        });
 
-    await waitForWrap();
+        renderWithStore(<SearchList />);
+        await waitForWrap();
+        expect(screen.getByRole('navigation')).toBeInTheDocument();
 
-    if (expectedPage === undefined) {
-      expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
-      expect(screen.getByText('Nothing Found')).toBeInTheDocument();
-    } else {
-      expect(screen.getByRole('navigation')).toBeInTheDocument();
-    }
+        const paginate = screen.getByRole('navigation');
+        expect(paginate).toBeInTheDocument();
+        expect(paginate).toHaveTextContent(currentPage.toString());
+        expect(paginate).toHaveTextContent(showLastPage);
+      }
+    );
+
+    test.each([
+      ['Positive integer', '1', 1],
+      ['0', '0', undefined],
+      ['non-integer', 'a', undefined],
+    ])('if the page is %s', async (_, pageParam, expectedPage) => {
+      (useParams as jest.Mock).mockReturnValue({ page: pageParam });
+
+      renderWithStore(<SearchList />);
+
+      await waitForWrap();
+
+      if (expectedPage === undefined) {
+        expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
+        expect(screen.getByText('Nothing Found')).toBeInTheDocument();
+      } else {
+        expect(screen.getByRole('navigation')).toBeInTheDocument();
+      }
+    });
   });
 });

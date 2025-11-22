@@ -90,7 +90,7 @@ export const SearchList = () => {
       ) : (
         currentPage && (
           <div className={styles.content}>
-            <CardList dataCharacters={data?.results || []} />
+            <CardList dataCharacters={data?.results} />
             <ReactPaginate
               previousClassName={`${styles.pagination__item} ${styles.pagination__previous}`}
               nextClassName={`${styles.pagination__item} ${styles.pagination__next}`}
@@ -99,11 +99,11 @@ export const SearchList = () => {
               breakLabel={'...'}
               breakClassName={`${styles.pagination__item} pagination__break-me`}
               pageCount={
-                (currentPage < 8
+                currentPage < 8
                   ? data.total_pages < 8
                     ? data.total_pages
                     : 8
-                  : currentPage + 1) || 0
+                  : currentPage + 1
               }
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
