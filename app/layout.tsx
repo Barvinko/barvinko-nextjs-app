@@ -1,12 +1,14 @@
-'use client';
-
-import { Provider } from 'react-redux';
-import { store } from '@store/store';
-import { ErrorBoundary } from '@components/providers/ErrorBoundary/ErrorBoundary';
-import { ThemeProvider } from '@components/providers/ThemeProvider/ThemeProvider';
+import type { Metadata } from 'next';
 import { Layout } from '@components/layout/Layout/Layout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@style/index.scss';
+
+export const metadata: Metadata = {
+  title: 'TMDB',
+  icons: {
+    icon: '/favicon.svg',
+  },
+};
 
 export default function RootLayout({
   children,
@@ -16,13 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body id="root">
-        <Provider store={store}>
-          <ErrorBoundary>
-            <ThemeProvider>
-              <Layout>{children}</Layout>
-            </ThemeProvider>
-          </ErrorBoundary>
-        </Provider>
+        <Layout>{children}</Layout>
       </body>
     </html>
   );
