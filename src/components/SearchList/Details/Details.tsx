@@ -11,6 +11,7 @@ import { ThemeContext } from '@store/ThemeContext';
 import { IMAGE_URLS } from '@/constants/URLs';
 import { useGetDetailsQuery, useLazyGetVideosQuery } from '@store/query/api';
 import { formatRuntime } from '@utilities/formatRuntime';
+import { getPage } from '@utilities/getPage';
 import styles from './Details.module.scss';
 
 export const Details = memo(() => {
@@ -43,7 +44,7 @@ export const Details = memo(() => {
 
   const handleClose = useCallback(() => {
     document.body.classList.remove('modal-open');
-    router.back();
+    router.push(`/page/${getPage(params)}`);
   }, [router]);
 
   const releaseYear = data?.release_date.split('-')[0];

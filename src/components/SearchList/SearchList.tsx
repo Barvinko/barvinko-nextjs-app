@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store';
 import { useGetMoviesQuery } from '@store/query/api';
 import { setSearchName } from '@store/localStorageSlice';
+import { getPage } from '@utilities/getPage';
 import styles from './SearchList.module.scss';
 
 export const SearchList = () => {
@@ -24,7 +25,7 @@ export const SearchList = () => {
     (state: RootState) => state.selectedCards.selectedCards
   );
 
-  const currentPage = getPage();
+  const currentPage = getPage(params);
 
   const queryParams = useMemo(
     () => ({
@@ -40,11 +41,6 @@ export const SearchList = () => {
     refetchOnFocus: false,
     refetchOnReconnect: false,
   });
-
-  function getPage(): number | undefined {
-    const page = parseInt(params?.page);
-    return Number.isInteger(page) && page > 0 ? page : undefined;
-  }
 
   const handlePageChange = useCallback(
     ({ selected }: { selected: number }) => {

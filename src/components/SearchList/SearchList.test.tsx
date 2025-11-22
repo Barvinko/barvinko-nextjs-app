@@ -134,9 +134,9 @@ describe('SearchList', () => {
     }));
 
     test.each([
-      ['when total_pages < 8 and currentPage < 8', 5, 1, '5'],
-      ['when total_pages >= 8 and currentPage < 8', 10, 1, '8'],
-      ['when currentPage >= 8 (e.g., page 10)', 20, 10, '11'],
+      ['when total_pages < 8 and currentPage < 8', 5, '1', '5'],
+      ['when total_pages >= 8 and currentPage < 8', 10, '1', '8'],
+      ['when currentPage >= 8 (e.g., page 10)', 20, '10', '11'],
     ])(
       'calculates pagination props correctly: %s (Total: %s, Current: %s)',
       async (_, totalPages, currentPage, showLastPage) => {

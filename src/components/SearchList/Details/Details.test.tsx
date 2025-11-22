@@ -21,14 +21,10 @@ jest.mock('next/navigation', () => ({
 
 describe('Details', () => {
   const mockPush = jest.fn();
-  const mockBack = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (useRouter as jest.Mock).mockReturnValue({
-      push: mockPush,
-      back: mockBack,
-    });
+    (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
     (useParams as jest.Mock).mockReturnValue({ page: '1', id: '1' });
   });
 
@@ -69,7 +65,7 @@ describe('Details', () => {
     const closeButton = await screen.findByText('✕');
     fireEvent.click(closeButton);
 
-    expect(mockBack).toHaveBeenCalledTimes(1);
+    expect(mockPush).toHaveBeenCalledTimes(1);
   });
 
   it('should display "-" when origin_country is empty or missing', async () => {
