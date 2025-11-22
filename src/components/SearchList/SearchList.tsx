@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import ReactPaginate from 'react-paginate';
 import { Search } from './Search/Search';
@@ -15,7 +15,6 @@ import styles from './SearchList.module.scss';
 export const SearchList = () => {
   const router = useRouter();
   const params = useParams<{ page: string }>();
-  const isFirstRender = useRef(true);
 
   const dispatch = useDispatch();
   const searchName = useSelector(
@@ -46,21 +45,6 @@ export const SearchList = () => {
     const page = parseInt(params?.page);
     return Number.isInteger(page) && page > 0 ? page : undefined;
   }
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    console.log(
-      'Data fetched:',
-      data,
-      'page:',
-      currentPage,
-      'search:',
-      searchName
-    );
-  }, [data?.page]);
 
   const handlePageChange = useCallback(
     ({ selected }: { selected: number }) => {
