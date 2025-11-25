@@ -1,0 +1,56 @@
+.cardList {
+  animation: fadeIn 0.5s ease-out;
+
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+    position: relative;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1200px) {
+  .cardList {
+    &__cards {
+      gap: 1.25rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .cardList {
+    &__title {
+      font-size: 2rem;
+    }
+
+    &__cards {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.5rem 1rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .cardList {
+    &__title {
+      font-size: 1.8rem;
+    }
+
+    &__cards {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1.7rem 0.75rem;
+    }
+  }
+}
